@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright (C) 2010 The Android Open Source Project
+# Copyright (C) 2012 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,9 +19,8 @@
 DEVICE=galaxyr
 MANUFACTURER=samsung
 
-mkdir -p ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/{,lib/hw,lib/egl,firmware}
-
 # HAL
+mkdir -p ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/hw
 adb pull /system/lib/hw/gralloc.tegra.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/hw/
 adb pull /system/lib/hw/overlay.tegra.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/hw/
 adb pull /system/lib/hw/sensors.tegra.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/hw/
@@ -30,16 +29,16 @@ adb pull /system/lib/hw/gps.GT-I9103.so ../../../vendor/$MANUFACTURER/$DEVICE/pr
 adb pull /system/lib/hw/lights.n1.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/hw/
 
 # EGL
+adb pull /system/lib/egl ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/egl
 adb pull /system/lib/egl/libEGL_tegra.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/egl/
 adb pull /system/lib/egl/libGLESv1_CM_tegra.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/egl/
 adb pull /system/lib/egl/libGLESv2_tegra.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/egl/
 
 # RIL files
+adb pull /system/bin/rild ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/lib/libril.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/lib/libsecril-client.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/lib/libsec-ril.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
-adb pull /system/bin/rild ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
-chmod 755 ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/rild
 
 # Camera
 adb pull /system/lib/libActionShot.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
@@ -106,12 +105,14 @@ adb pull /system/etc/wifi/nvram_mfg.txt_murata ../../../vendor/$MANUFACTURER/$DE
 adb pull /system/etc/wifi/nvram_net.txt ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/nvram_net.txt
 adb pull /system/etc/wifi/nvram_net.txt_b0 ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/nvram_net.txt_b0
 adb pull /system/etc/wifi/nvram_net.txt_murata ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/nvram_net.txt_murata
+adb pull /system/bin/btld ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/bin/wlandutservice ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/bin/wpa_supplicant ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/bin/macloader ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/bin/mfgloader ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/etc/wifi/wl ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/etc/wifi/iwmulticall ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
+chmod 755 ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/btld
 chmod 755 ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/wlandutservice
 chmod 755 ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/wpa_supplicant
 chmod 755 ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/macloader
@@ -141,6 +142,7 @@ adb pull /system/lib/libnvdispmgr_d.so ../../../vendor/$MANUFACTURER/$DEVICE/pro
 adb pull /system/lib/libcgdrv.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 
 # Firmwares
+adb pull /system/etc/firmware ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/firmware
 adb pull /system/etc/firmware/nvddk_audiofx_core.axf ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/firmware/
 adb pull /system/etc/firmware/nvddk_audiofx_transport.axf ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/firmware/
 adb pull /system/etc/firmware/nvmm_aacdec.axf ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/firmware/
@@ -279,6 +281,7 @@ PRODUCT_COPY_FILES += \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/macloader:system/bin/macloader \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/mfgloader:system/bin/mfgloader \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/wl:system/etc/wifi/wl \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/btld:system/bin/btld \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/iwmulticall:system/etc/wifi/iwmulticall
 
 # OMX shared libraries
