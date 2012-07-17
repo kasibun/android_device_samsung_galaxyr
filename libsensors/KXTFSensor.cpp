@@ -1,5 +1,8 @@
 /*
- * Copyright (C) 2008 The Android Open Source Project
+ * Copyright (C) 2012 The Android Open Source Project
+ *
+ * InputReader based sensor interface for KXTF9 I2C sensor
+ * Tanguy Pruvot, July 2012 <tpruvot@github>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +17,7 @@
  * limitations under the License.
  */
 
-#define LOG_NDEBUG 0
+//#define LOG_NDEBUG 0
 
 #include <fcntl.h>
 #include <errno.h>
@@ -25,25 +28,27 @@
 #include <sys/select.h>
 #include <cutils/log.h>
 
-#include "GyroSensor.h"
+#include "sensors.h"
 
-#define FETCH_FULL_EVENT_BEFORE_RETURN 0
+#include "KXTFSensor.h"
+
+#define FETCH_FULL_EVENT_BEFORE_RETURN 1
 #define IGNORE_EVENT_TIME 350000000
 
-#define TAG "[MPU] "
+#define TAG "[KXT] "
 
 /*****************************************************************************/
 
-GyroSensor::GyroSensor()
-    : SensorBase(NULL, "mpu-accel"),
+KXTFSensor::KXTFSensor()
+    : SensorBase(NULL, "accelerometer_sensor"),
       mEnabled(0),
       mInputReader(4),
       mHasPendingEvent(false),
       mEnabledTime(0)
 {
     mPendingEvent.version = sizeof(sensors_event_t);
-    mPendingEvent.sensor = ID_GY;
-    mPendingEvent.type = SENSOR_TYPE_GYROSCOPE;
+    mPendingEvent.sensor = ID_A;
+    mPendingEvent.type = SENSOR_TYPE_ACCELEROMETER;
     memset(mPendingEvent.data, 0, sizeof(mPendingEvent.data));
 
     if (data_fd) {
@@ -55,32 +60,56 @@ GyroSensor::GyroSensor()
     }
 }
 
-GyroSensor::~GyroSensor() {
+KXTFSensor::~KXTFSensor()
+{
+    LOGV(LOG_TAG "[KXTF9] " __FUNCTION__);
     if (mEnabled) {
         enable(0, 0);
     }
 }
 
-int GyroSensor::setInitialState() {
+int KXTFSensor::setInitialState()
+{
     struct input_absinfo absinfo_x;
     struct input_absinfo absinfo_y;
     struct input_absinfo absinfo_z;
     float value;
-    if (!ioctl(data_fd, EVIOCGABS(EVENT_TYPE_GYRO_X), &absinfo_x) &&
-        !ioctl(data_fd, EVIOCGABS(EVENT_TYPE_GYRO_Y), &absinfo_y) &&
-        !ioctl(data_fd, EVIOCGABS(EVENT_TYPE_GYRO_Z), &absinfo_z)) {
-        value = absinfo_x.value;
-        mPendingEvent.data[0] = value * CONVERT_GYRO_X;
-        value = absinfo_y.value;
-        mPendingEvent.data[1] = value * CONVERT_GYRO_Y;
-        value = absinfo_z.value;
-        mPendingEvent.data[2] = value * CONVERT_GYRO_Z;
-        mHasPendingEvent = true;
+
+    /* Sample raw data :
+     *   12, -298, -979
+     */
+    FILE *fd = fopen("/sys/devices/virtual/sec/sec_kxtf9/kxtf9_rawdata", "r");
+    if (fd != NULL) {
+        char buf[24] = "";
+
+        fgets(&buf[0], sizeof(buf), fd);
+        fclose(fd);
+
+        int nr = sscanf(buf, "%d, %d, %d", 
+            &absinfo_x.value, &absinfo_y.value, &absinfo_z.value);
+
+        if (nr >= 0) {
+            value = absinfo_x.value;
+            mPendingEvent.data[1] = value * CONVERT_A_Y;
+            value = absinfo_y.value;
+            mPendingEvent.data[0] = value * CONVERT_A_X;
+            value = absinfo_z.value;
+            mPendingEvent.data[2] = value * CONVERT_A_Z;
+            mHasPendingEvent = true;
+        }
     }
+
+    if (mHasPendingEvent) {
+        LOGD(TAG "%s: %d %d %d -> %f %f %f", __FUNCTION__,
+                absinfo_x.value, absinfo_y.value, absinfo_z.value,
+                mPendingEvent.data[0], mPendingEvent.data[1], mPendingEvent.data[2]);
+    }
+
     return 0;
 }
 
-int GyroSensor::enable(int32_t, int en) {
+int KXTFSensor::enable(int32_t, int en)
+{
     int flags = en ? 1 : 0;
     if (flags != mEnabled) {
         int fd;
@@ -104,17 +133,17 @@ int GyroSensor::enable(int32_t, int en) {
             setInitialState();
             return 0;
         }
-        LOGE(TAG "%s enable failed, err %d", __FUNCTION__, errno);
+        LOGE(TAG "%s(%d) failed, err %d", __FUNCTION__, en, errno);
         return -1;
     }
     return 0;
 }
 
-bool GyroSensor::hasPendingEvents() const {
+bool KXTFSensor::hasPendingEvents() const {
     return mHasPendingEvent;
 }
 
-int GyroSensor::setDelay(int32_t handle, int64_t delay_ns)
+int KXTFSensor::setDelay(int32_t handle, int64_t delay_ns)
 {
     int fd;
     strcpy(&input_sysfs_path[input_sysfs_path_len], "poll_delay");
@@ -129,7 +158,7 @@ int GyroSensor::setDelay(int32_t handle, int64_t delay_ns)
     return -1;
 }
 
-int GyroSensor::readEvents(sensors_event_t* data, int count)
+int KXTFSensor::readEvents(sensors_event_t* data, int count)
 {
     if (count < 1)
         return -EINVAL;
@@ -156,12 +185,12 @@ again:
         int type = event->type;
         if (type == EV_REL) {
             float value = event->value;
-            if (event->code == EVENT_TYPE_GYRO_X) {
-                mPendingEvent.data[0] = value * CONVERT_GYRO_X;
-            } else if (event->code == EVENT_TYPE_GYRO_Y) {
-                mPendingEvent.data[1] = value * CONVERT_GYRO_Y;
-            } else if (event->code == EVENT_TYPE_GYRO_Z) {
-                mPendingEvent.data[2] = value * CONVERT_GYRO_Z;
+            if (event->code == EVENT_TYPE_ACCEL_X) {
+                mPendingEvent.data[1] = value * KXTF9_CONVERT_A_Y; /* X/Y inversed */
+            } else if (event->code == EVENT_TYPE_ACCEL_Y) {
+                mPendingEvent.data[0] = value * KXTF9_CONVERT_A_X;
+            } else if (event->code == EVENT_TYPE_ACCEL_Z) {
+                mPendingEvent.data[2] = value * KXTF9_CONVERT_A_Z;
             }
         } else if (type == EV_SYN) {
             mPendingEvent.timestamp = timevalToNano(event->time);
@@ -173,8 +202,8 @@ again:
                 count--;
             }
         } else {
-            LOGE(TAG "unknown event (type=0x%x, code=0x%x)",
-                    type, event->code);
+            LOGE(TAG "%s: unknown event (type=%d, code=%d)",
+                    __FUNCTION__, type, event->code);
         }
         mInputReader.next();
     }
@@ -182,12 +211,18 @@ again:
 #if FETCH_FULL_EVENT_BEFORE_RETURN
     /* if we didn't read a complete event, see if we can fill and
        try again instead of returning with nothing and redoing poll. */
-    if (numEventReceived == 0 && mEnabled == 1 && --timeout > 0) {
+    if (numEventReceived == 0 && mEnabled == 1 && --timeout) {
         n = mInputReader.fill(data_fd);
         if (n)
             goto again;
     }
 #endif
+
+    if (mHasPendingEvent) {
+        LOGV(TAG "%s: %d %d %d -> %f %f %f", __FUNCTION__,
+                absinfo_x.value, absinfo_y.value, absinfo_z.value,
+                mPendingEvent.data[0], mPendingEvent.data[1], mPendingEvent.data[2]);
+    }
 
     return numEventReceived;
 }

@@ -46,6 +46,7 @@ PRODUCT_PACKAGES += \
     galaxyrSettings \
     SamsungServiceMode \
     Torch \
+    FM \
     Galaxy4 \
     NoiseField \
     PhaseBeam \
@@ -60,6 +61,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     sensors.n1 \
     sensors.tegra \
+    lights.n1 \
     lights.tegra \
     gps.n1 \
     gralloc.tegra \
@@ -75,6 +77,9 @@ PRODUCT_COPY_FILES += \
     device/samsung/galaxyr/init.n1.rc:root/init.n1.rc \
     device/samsung/galaxyr/ueventd.n1.rc:root/ueventd.n1.rc
 
+# debug purpose...
+PRODUCT_COPY_FILES += device/samsung/galaxyr/configs/init.rc:root/init.rc
+
 # Prebuilt modules
 PRODUCT_COPY_FILES += \
     device/samsung/galaxyr/prebuilt/dhd.ko:root/lib/modules/dhd.ko \
@@ -87,10 +92,11 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/samsung/galaxyr/configs/vold.fstab:system/etc/vold.fstab
 
-# Wifi
+# Wifi, BT
 PRODUCT_COPY_FILES += \
     device/samsung/galaxyr/configs/wifi.conf:system/etc/wifi/wifi.conf \
-    device/samsung/galaxyr/configs/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf
+    device/samsung/galaxyr/configs/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
+    device/samsung/galaxyr/configs/BCM4330B1_002.001.003.0221.0263.hcd:system/etc/bluetooth/BCM4330B1_002.001.003.0221.0263.hcd \
 
 # GPS
 PRODUCT_COPY_FILES += \
@@ -99,7 +105,12 @@ PRODUCT_COPY_FILES += \
 
 # Media
 PRODUCT_COPY_FILES += \
-	device/samsung/galaxyr/configs/media_profiles.xml:system/etc/media_profiles.xml
+    device/samsung/galaxyr/configs/media_profiles.xml:system/etc/media_profiles.xml \
+
+# Shell and busybox
+PRODUCT_COPY_FILES += \
+    device/samsung/galaxyr/configs/profile:system/etc/profile \
+    device/samsung/galaxyr/configs/busybox.fstab:system/etc/fstab \
 
 # Keylayout
 PRODUCT_COPY_FILES += \
@@ -162,26 +173,25 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.ril.hsdpa.category=8 \
     ro.ril.hsupa.category=5 \
     ro.ril.hsxpa=2 \
+    ro.kernel.android.ril=yes \
+    ro.telephony.ril_class=samsung \
     rild.libpath=/system/lib/libsec-ril.so \
-    rild.libargs="-d /dev/ttys0"
+    rild.libargs="-d /dev/ttyS0"
 
 # The OpenGL ES API level that is natively supported by this device.
 # This is a 16.16 fixed point number
-PRODUCT_PROPERTY_OVERRIDES := \
+PRODUCT_PROPERTY_OVERRIDES += \
     ro.opengles.version=131072
 
 # These are the hardware-specific settings that are stored in system properties.
 # Note that the only such settings should be the ones that are too low-level to
 # be reachable from resources or other mechanisms.
 PRODUCT_PROPERTY_OVERRIDES += \
-    wifi.interface=eth0 \
     wifi.supplicant_scan_interval=30 \
     ro.board.platform=tegra \
     ro.sf.lcd_density=240 \
-    ro.telephony.ril_class=samsung \
     ro.telephony.sends_barcount=1 \
     ro.com.android.dataroaming=false \
-    mobiledata.interfaces=eth0,rmnet0,rmnet1,rmnet2 \
     dalvik.vm.heapsize=64m \
     persist.service.usb.setting=0 \
     dev.sfbootcomplete=0 \

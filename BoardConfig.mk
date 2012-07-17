@@ -61,14 +61,19 @@ TARGET_NO_RADIOIMAGE := true
 
 # RIL
 BOARD_USES_LIBSECRIL_STUB := true
+BOARD_MOBILEDATA_INTERFACE_NAME := "pdp0"
 
 # Audio
 BOARD_USES_GENERIC_AUDIO := false
 TARGET_PROVIDES_LIBAUDIO := false # We must build it.
 
 # Camera
-#USE_CAMERA_STUB := true
+# USE_CAMERA_STUB := true
 BOARD_VENDOR_USE_NV_CAMERA := true
+BOARD_CAMERA_USE_GETBUFFERINFO := true
+#BOARD_USE_CAF_LIBCAMERA := true
+BOARD_USE_CAF_LIBCAMERA_GB_REL := true
+TARGET_SPECIFIC_HEADER_PATH := device/samsung/galaxyr
 BOARD_CAMERA_LIBRARIES := libcamera
 BOARD_SECOND_CAMERA_DEVICE := true
 
@@ -117,6 +122,11 @@ WIFI_DRIVER_MODULE_ARG      := "firmware_path=/system/etc/wifi/bcm4330_sta.bin n
 TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := ./device/samsung/galaxyr/releasetools/galaxyr_ota_from_target_files
 TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := ./device/samsung/galaxyr/releasetools/galaxyr_img_from_target_files
 
+# Custom squisher, final step script
+TARGET_CUSTOM_RELEASETOOL := ./device/samsung/galaxyr/releasetools/squisher
+
+# TARGET_PROVIDES_INIT_RC := true
+
 # Assert
 TARGET_OTA_ASSERT_DEVICE := galaxyr,GT-I9103
 
@@ -133,6 +143,7 @@ BOARD_SDEXT_DEVICE := /dev/block/mmcblk1p1
 TARGET_RECOVERY_INITRC := ./device/samsung/galaxyr/recovery.rc
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/samsung/galaxyr/recovery/recovery_keys.c
 BOARD_CUSTOM_GRAPHICS := ../../../device/samsung/galaxyr/recovery/graphics.c
+
 
 BOARD_USE_USB_MASS_STORAGE_SWITCH := true
 BOARD_UMS_LUNFILE := "/sys/devices/platform/usb_mass_storage/lun0/file"

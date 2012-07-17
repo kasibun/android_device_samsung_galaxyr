@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+ 
 #ifndef ANDROID_AKM_SENSOR_H
 #define ANDROID_AKM_SENSOR_H
 
@@ -31,12 +31,14 @@
 
 struct input_event;
 
-class AkmSensor : public SensorBase {
+class SensorAK8975 : public SensorBase
+{
 public:
-            AkmSensor();
-    virtual ~AkmSensor();
+    SensorAK8975();
+    virtual ~SensorAK8975();
 
-    enum {
+    enum
+    {
         Accelerometer   = 0,
         MagneticField   = 1,
         Orientation     = 2,
@@ -46,16 +48,19 @@ public:
 
     virtual int setDelay(int32_t handle, int64_t ns);
     virtual int enable(int32_t handle, int enabled);
+    virtual bool hasPendingEvents() const;
     virtual int readEvents(sensors_event_t* data, int count);
     void processEvent(int code, int value);
 
 private:
-    int loadAKMLibrary();
-    void *mLibAKM;
+    int updateDelay();
+
     uint32_t mEnabled;
+    bool mHasPendingEvent;
     uint32_t mPendingMask;
     InputEventCircularReader mInputReader;
     sensors_event_t mPendingEvents[numSensors];
+    uint64_t mDelays[numSensors];
 };
 
 /*****************************************************************************/

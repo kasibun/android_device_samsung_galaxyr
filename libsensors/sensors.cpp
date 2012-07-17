@@ -15,6 +15,7 @@
  */
 
 #define LOG_TAG "Sensors"
+//#define LOG_NDEBUG 0
 
 #include <hardware/sensors.h>
 #include <fcntl.h>
@@ -34,8 +35,12 @@
 
 #include "LightSensor.h"
 #include "ProximitySensor.h"
-#include "AkmSensor.h"
+
+#include "AkmSensor.h"      /* akm8975 */
+
+#include "KXTFSensor.h" 
 #include "GyroSensor.h"
+#include "NctSensor.h"
 
 /*****************************************************************************/
 
@@ -50,13 +55,24 @@
 #define SENSORS_LIGHT            (1<<ID_L)
 #define SENSORS_PROXIMITY        (1<<ID_P)
 #define SENSORS_GYROSCOPE        (1<<ID_GY)
+#define SENSORS_TEMPERATURE      (1<<ID_T)
 
+#define SENSORS_LIGHT_HANDLE            (SENSORS_HANDLE_BASE + SENSOR_TYPE_LIGHT)
+#define SENSORS_PROXIMITY_HANDLE        (SENSORS_HANDLE_BASE + SENSOR_TYPE_PROXIMITY)
+#define SENSORS_ACCELERATION_HANDLE     (SENSORS_HANDLE_BASE + SENSOR_TYPE_ACCELEROMETER)
+#define SENSORS_MAGNETIC_FIELD_HANDLE   (SENSORS_HANDLE_BASE + SENSOR_TYPE_MAGNETIC_FIELD)
+#define SENSORS_ORIENTATION_HANDLE      (SENSORS_HANDLE_BASE + SENSOR_TYPE_ORIENTATION)
+#define SENSORS_GYROSCOPE_HANDLE        (SENSORS_HANDLE_BASE + SENSOR_TYPE_GYROSCOPE)
+#define SENSORS_TEMPERATURE_HANDLE      (SENSORS_HANDLE_BASE + SENSOR_TYPE_TEMPERATURE)
+
+#if 0
 #define SENSORS_ACCELERATION_HANDLE     0
 #define SENSORS_MAGNETIC_FIELD_HANDLE   1
 #define SENSORS_ORIENTATION_HANDLE      2
 #define SENSORS_LIGHT_HANDLE            3
 #define SENSORS_PROXIMITY_HANDLE        4
 #define SENSORS_GYROSCOPE_HANDLE        5
+#endif
 
 #define AKM_FTRACE 0
 #define AKM_DEBUG 0
@@ -64,32 +80,37 @@
 
 /*****************************************************************************/
 
-/* The SENSORS Module */
-static const struct sensor_t sSensorList[] = {
-        { "KR3DM 3-axis Accelerometer",
-          "STMicroelectronics",
-          1, SENSORS_ACCELERATION_HANDLE,
-          SENSOR_TYPE_ACCELEROMETER, RANGE_A, CONVERT_A, 0.23f, 20000, { } },
-        { "AK8975 3-axis Magnetic field sensor",
-          "Asahi Kasei Microdevices",
-          1, SENSORS_MAGNETIC_FIELD_HANDLE,
-          SENSOR_TYPE_MAGNETIC_FIELD, 2000.0f, CONVERT_M, 6.8f, 16667, { } },
-        { "AK8973 Orientation sensor",
-          "Asahi Kasei Microdevices",
-          1, SENSORS_ORIENTATION_HANDLE,
-          SENSOR_TYPE_ORIENTATION, 360.0f, CONVERT_O, 7.8f, 16667, { } },
-        { "CM3663 Light sensor",
-          "Capella Microsystems",
-          1, SENSORS_LIGHT_HANDLE,
-          SENSOR_TYPE_LIGHT, 10240.0f, 1.0f, 0.75f, 0, { } },
-        { "CM3663 Proximity sensor",
-          "Capella Microsystems",
-          1, SENSORS_PROXIMITY_HANDLE,
-          SENSOR_TYPE_PROXIMITY, 5.0f, 5.0f, 0.75f, 0, { } },
-        { "K3G Gyroscope sensor",
-          "STMicroelectronics",
-          1, SENSORS_GYROSCOPE_HANDLE,
-          SENSOR_TYPE_GYROSCOPE, RANGE_GYRO, CONVERT_GYRO, 6.1f, 1190, { } },
+/* The SENSORS Modules */
+static struct sensor_t sSensorList[] = {
+    { "CM3663 Light sensor", "Capella Microsystems",
+      1, SENSORS_LIGHT_HANDLE,
+        SENSOR_TYPE_LIGHT, 10240.0f, 1.0f, 0.75f, 0, { }
+    },
+    { "CM3663 Proximity sensor", "Capella Microsystems",
+      1, SENSORS_PROXIMITY_HANDLE,
+        SENSOR_TYPE_PROXIMITY, 5.0f, 5.0f, 0.75f, 0, { }
+    },
+    { "KXTF9 3-axis Accelerometer", "Kyonix",
+      1, SENSORS_ACCELERATION_HANDLE,
+          SENSOR_TYPE_ACCELEROMETER, RANGE_A, CONVERT_A, 0.23f, 100000, { }
+    },
+    { "AK8975 3-axis Magnetic field sensor", "Asahi Kasei Microdevices",
+      1, SENSORS_MAGNETIC_FIELD_HANDLE, SENSOR_TYPE_MAGNETIC_FIELD, 2000.0f, CONVERT_M, 6.8f, 100000, { }
+    },
+    { "AK8975 Orientation sensor", "Asahi Kasei Microdevices",
+      1, SENSORS_ORIENTATION_HANDLE,
+          SENSOR_TYPE_ORIENTATION, 360.0f, CONVERT_O, 7.8f, 100000, { }
+    },
+#ifdef USE_MPU
+    { "MPU3050 Gyroscope sensor", "InvenSense",
+      1, SENSORS_GYROSCOPE_HANDLE,
+          SENSOR_TYPE_GYROSCOPE, RANGE_GYRO, CONVERT_GYRO, 6.1f, 0, { }
+    },
+#endif
+    { "NCT1008 Battery Temperature", "ON Semiconductor",
+      1, SENSORS_TEMPERATURE_HANDLE,
+          SENSOR_TYPE_TEMPERATURE, 127.0f, 1.0f, 0.240f, 500000, { }
+    },
 };
 
 
@@ -117,6 +138,8 @@ struct sensors_module_t HAL_MODULE_INFO_SYM = {
                 name: "Samsung Sensor module",
                 author: "Samsung Electronic Company",
                 methods: &sensors_module_methods,
+                dso: NULL,
+                reserved: {},
         },
         get_sensors_list: sensors__get_sensors_list,
 };
@@ -133,9 +156,13 @@ struct sensors_poll_context_t {
 private:
     enum {
         light           = 0,
-        proximity       = 1,
-        akm             = 2,
-        gyro            = 3,
+        proximity,
+        kxt,
+        akm,
+        nct,
+#ifdef USE_MPU
+        gyro,
+#endif
         numSensorDrivers,
         numFds,
     };
@@ -149,6 +176,7 @@ private:
     int handleToDriver(int handle) const {
         switch (handle) {
             case ID_A:
+                return kxt;
             case ID_M:
             case ID_O:
                 return akm;
@@ -156,8 +184,12 @@ private:
                 return proximity;
             case ID_L:
                 return light;
+#ifdef USE_MPU
             case ID_GY:
                 return gyro;
+#endif
+            case ID_T:
+                return nct;
         }
         return -EINVAL;
     }
@@ -177,15 +209,27 @@ sensors_poll_context_t::sensors_poll_context_t()
     mPollFds[proximity].events = POLLIN;
     mPollFds[proximity].revents = 0;
 
+    mSensors[kxt] = new KXTFSensor();
+    mPollFds[kxt].fd = mSensors[kxt]->getFd();
+    mPollFds[kxt].events = POLLIN;
+    mPollFds[kxt].revents = 0;
+
     mSensors[akm] = new AkmSensor();
     mPollFds[akm].fd = mSensors[akm]->getFd();
     mPollFds[akm].events = POLLIN;
     mPollFds[akm].revents = 0;
 
+#ifdef USE_MPU
     mSensors[gyro] = new GyroSensor();
     mPollFds[gyro].fd = mSensors[gyro]->getFd();
     mPollFds[gyro].events = POLLIN;
     mPollFds[gyro].revents = 0;
+#endif
+
+    mSensors[nct] = new NctSensor();
+    mPollFds[nct].fd = mSensors[nct]->getFd();
+    mPollFds[nct].events = POLLIN;
+    mPollFds[nct].revents = 0;
 
     int wakeFds[2];
     int result = pipe(wakeFds);
@@ -236,6 +280,7 @@ int sensors_poll_context_t::pollEvents(sensors_event_t* data, int count)
         for (int i=0 ; count && i<numSensorDrivers ; i++) {
             SensorBase* const sensor(mSensors[i]);
             if ((mPollFds[i].revents & POLLIN) || (sensor->hasPendingEvents())) {
+                LOGV("read sensor %d", i);
                 int nb = sensor->readEvents(data, count);
                 if (nb < count) {
                     // no more data for this sensor
