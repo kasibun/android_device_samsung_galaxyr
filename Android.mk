@@ -15,8 +15,10 @@
 ifeq ($(TARGET_BOOTLOADER_BOARD_NAME),n1)
 
 LOCAL_PATH := $(call my-dir)
+include $(all-subdir-makefiles)
+
 include $(call all-makefiles-under,$(LOCAL_PATH))
 
-include $(all-subdir-makefiles)
+
 
 endif
