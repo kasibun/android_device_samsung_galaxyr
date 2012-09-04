@@ -87,6 +87,7 @@ DISABLE_DEXPREOPT := false
 PRODUCT_COPY_FILES += \
     device/samsung/galaxyr/lpm.rc:root/lpm.rc \
     device/samsung/galaxyr/init.n1.rc:root/init.n1.rc \
+    device/samsung/galaxyr/init.n1.usb.rc:root/init.n1.usb.rc \
     device/samsung/galaxyr/ueventd.n1.rc:root/ueventd.n1.rc \
     device/samsung/galaxyr/scripts/lpm_boot_check.sh:system/bin/lpm_boot_check.sh \
 
@@ -100,7 +101,6 @@ endif
 
 PRODUCT_COPY_FILES += \
     device/samsung/galaxyr/prebuilt/dhd.ko:root/lib/modules/dhd.ko \
-    device/samsung/galaxyr/prebuilt/bthid.ko:root/lib/modules/bthid.ko \
     device/samsung/galaxyr/prebuilt/scsi_wait_scan.ko:root/lib/modules/scsi_wait_scan.ko \
     device/samsung/galaxyr/prebuilt/modules.dep:root/lib/modules/modules.dep
 
@@ -111,8 +111,7 @@ PRODUCT_COPY_FILES += \
 # Wifi, BT
 PRODUCT_COPY_FILES += \
     device/samsung/galaxyr/configs/wifi.conf:system/etc/wifi/wifi.conf \
-    device/samsung/galaxyr/configs/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
-    device/samsung/galaxyr/configs/BCM4330B1_002.001.003.0221.0263.hcd:system/etc/bluetooth/BCM4330B1_002.001.003.0221.0263.hcd \
+    device/samsung/galaxyr/configs/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf
 
 # GPS
 PRODUCT_COPY_FILES += \

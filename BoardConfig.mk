@@ -58,7 +58,8 @@ BOARD_RECOVERY_RAMDISK_EXTRA_SCRIPT := device/samsung/galaxyr/releasetools/recov
 
 # Filesystem
 BOARD_BOOTIMAGE_PARTITION_SIZE     := 8388608
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 5242880
+#BOARD_RECOVERYIMAGE_PARTITION_SIZE := 5242880
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 8000000 # Temporary hack
 BOARD_SYSTEMIMAGE_PARTITION_SIZE   := 629145600
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 2147483648
 BOARD_FLASH_BLOCK_SIZE := 4096
@@ -139,10 +140,10 @@ BOARD_WLAN_DEVICE           	:= bcm4330
 #BOARD_HOSTAPD_DRIVER            := NL80211
 #BOARD_HOSTAPD_PRIVATE_LIB       := lib_driver_cmd_bcmdhd
 WIFI_DRIVER_MODULE_PATH     	:= "/lib/modules/dhd.ko"
-WIFI_DRIVER_FW_PATH_STA     	:= "/system/etc/wifi/bcm4330_sta.bin"
-WIFI_DRIVER_FW_PATH_AP      	:= "/system/etc/wifi/bcm4330_aps.bin"
+WIFI_DRIVER_FW_PATH_AP      	:= "/system/etc/wifi/bcm4330_apsta.bin"
 WIFI_DRIVER_FW_PATH_MFG     	:= "/system/etc/wifi/bcm4330_mfg.bin"
 WIFI_DRIVER_FW_PATH_P2P     	:= "/system/etc/wifi/bcm4330_p2p.bin"
+WIFI_DRIVER_FW_PATH_STA     	:= "/system/etc/wifi/bcm4330_sta.bin"
 #WIFI_FIRMWARE_LOADER       	:= "wlandutservice"
 WIFI_DRIVER_MODULE_NAME     	:= "dhd"
 WIFI_DRIVER_MODULE_ARG      	:= "firmware_path=/system/etc/wifi/bcm4330_sta.bin nvram_path=/system/etc/wifi/nvram_net.txt"

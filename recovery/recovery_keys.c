@@ -5,6 +5,7 @@
 #include "extendedcommands.h"
 
 int device_toggle_display(volatile char* key_pressed, int key_code) {
+#if 0
     int alt = key_pressed[KEY_LEFTALT] || key_pressed[KEY_RIGHTALT];
     if (alt && key_code == KEY_L)
         return 1;
@@ -13,7 +14,9 @@ int device_toggle_display(volatile char* key_pressed, int key_code) {
         return 0;
         //return get_allow_toggle_display() && (key_code == KEY_HOME || key_code == KEY_MENU || key_code == KEY_END);
     }
-    return get_allow_toggle_display() && (key_code == KEY_HOMEPAGE || key_code == KEY_MENU || key_code == KEY_POWER || key_code == KEY_END);
+    return get_allow_toggle_display() && (key_code == KEY_HOME || key_code == KEY_POWER);
+#endif
+    return 0;
 }
 
 int device_handle_key(int key_code, int visible) {
@@ -30,19 +33,11 @@ int device_handle_key(int key_code, int visible) {
             case KEY_VOLUMEUP:
                 return HIGHLIGHT_UP;
             case KEY_HOME:
-                if (ui_get_showing_back_button()) {
-                    return SELECT_ITEM;
-                }
-                if (!get_allow_toggle_display() && !ui_root_menu)
-                    return GO_BACK;
-                break;
+                return SELECT_ITEM;
             case KEY_POWER:
-                if (ui_get_showing_back_button()) {
-                    return SELECT_ITEM;
-                }
-                if (!get_allow_toggle_display() && !ui_root_menu)
+                if (!ui_root_menu) {
                     return GO_BACK;
-                break;
+                }
             case KEY_LEFTBRACE:
             case KEY_ENTER:
             case BTN_MOUSE:
