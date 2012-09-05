@@ -12,19 +12,26 @@ on init
     mkdir /dev/pipes 0771 shell shell
 
     # for backwards compatibility
+    export PHONE_STORAGE /mnt/emmc
+    export USBHOST_STORAGE /mnt/usbdisk
     export EXTERNAL_STORAGE /mnt/sdcard
+
+    mkdir /mnt/emmc 0000 system system
+    mkdir /mnt/usbdisk 0000 system system
     mkdir /mnt/sdcard 0000 system system
+    
     mkdir /preload 0771 system system
     symlink /mnt/sdcard /sdcard
 
    # mkdir /mnt/sdcard2 0000 system system
+
 on fs
     mount ext4 /dev/block/platform/sdhci-tegra.3/by-num/p2 /system wait ro
     exec sfsck /dev/block/platform/sdhci-tegra.3/by-num/p1 ext4
     mount ext4 /dev/block/platform/sdhci-tegra.3/by-num/p1 /efs wait noatime nosuid nodev
-	chown radio system /efs
-	chmod 0775 /efs
-	chmod 0775 /efs/bluetooth
+    chown radio system /efs
+    chmod 0775 /efs
+    chmod 0775 /efs/bluetooth
 
     #mount ext4 /dev/block/platform/sdhci-tegra.3/by-num/p2 /system wait ro
     
@@ -38,9 +45,9 @@ on fs
     mount ext4 /dev/block/mmcblk0p11 /preload nosuid nodev noatime wait ro
     mkdir /mnt/modem 0770 radio system
 	
-	# MTP Device permission.
-	chmod 0660 /dev/usb_mtp_gadget
-	chown system system /dev/usb_mtp_gadget
+    # MTP Device permission.
+    chmod 0660 /dev/usb_mtp_gadget
+    chown system system /dev/usb_mtp_gadget
 
 on boot
     mkdir /efs/wifi
@@ -410,10 +417,10 @@ service bt_dut_cmd /system/bin/bcm_dut
     oneshot
     
 # Start FIL daemon
-service fil-daemon /system/bin/fild -p /dev/ttyHS0 -s /dev/ttyACM0 -f /dev/ttyACM0 --with-bt3
-    class main
-    user radio
-    group log
+#service fil-daemon /system/bin/fild -p /dev/ttyHS0 -s /dev/ttyACM0 -f /dev/ttyACM0 --with-bt3
+#    class main
+#    user radio
+#    group log
 
 # Unused in Android OS
 # Recovery daemon: configure MSC partition

@@ -50,6 +50,7 @@ PRODUCT_PACKAGES += \
     Galaxy4 \
     NoiseField \
     PhaseBeam \
+    Camera \
     librs_jni
 
 # Filesystem management tools
@@ -89,7 +90,7 @@ PRODUCT_COPY_FILES += \
     device/samsung/galaxyr/init.n1.rc:root/init.n1.rc \
     device/samsung/galaxyr/init.n1.usb.rc:root/init.n1.usb.rc \
     device/samsung/galaxyr/ueventd.n1.rc:root/ueventd.n1.rc \
-    device/samsung/galaxyr/scripts/lpm_boot_check.sh:system/bin/lpm_boot_check.sh \
+    device/samsung/galaxyr/scripts/lpm_boot_check.sh:system/bin/lpm_boot_check.sh
 
 # debug purpose...
 ifeq ($(TARGET_PROVIDES_INIT_RC),true)
@@ -97,7 +98,7 @@ ifeq ($(TARGET_PROVIDES_INIT_RC),true)
 endif
 
 # Prebuilt modules
-#     device/samsung/galaxyr/prebuilt/Si4709_driver.ko:root/lib/modules/Si4709_driver.ko \
+#     device/samsung/galaxyr/prebuilt/Si4709_driver.ko:root/lib/modules/Si4709_driver.ko
 
 PRODUCT_COPY_FILES += \
     device/samsung/galaxyr/prebuilt/dhd.ko:root/lib/modules/dhd.ko \
@@ -110,7 +111,6 @@ PRODUCT_COPY_FILES += \
 
 # Wifi, BT
 PRODUCT_COPY_FILES += \
-    device/samsung/galaxyr/configs/wifi.conf:system/etc/wifi/wifi.conf \
     device/samsung/galaxyr/configs/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf
 
 # GPS

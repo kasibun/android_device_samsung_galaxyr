@@ -26,6 +26,11 @@ mkdir -p ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/hw
 adb pull /system/lib/hw/gralloc.tegra.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/hw/
 adb pull /system/lib/hw/hwcomposer.tegra.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/hw/
 adb pull /system/lib/hw/gps.tegra.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/hw/
+adb pull /system/lib/hw/audio.primary.tegra.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/hw/
+adb pull /system/lib/hw/audio_policy.tegra.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/hw/
+adb pull /system/lib/hw/camera.tegra.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/hw/
+adb pull /system/lib/hw/lights.n1.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/hw/
+adb pull /system/lib/hw/sensors.n1.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/hw/
 
 # EGL
 mkdir -p ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/egl
@@ -147,11 +152,15 @@ adb pull /system/bin/immvibed ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/bin/drexe ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/bin/npsmobex ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/lib/libsisodrm.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
+adb pull /system/bin/nvcpud ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
+adb pull /system/bin/bintvoutservice ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 chmod 755 ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/playlpm
 chmod 755 ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/playsound
 chmod 755 ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/immvibed
 chmod 755 ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/drexe
 chmod 755 ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/npsmobex
+chmod 755 ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/nvcpud
+chmod 755 ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/bintvoutservice
 
 mkdir -p ../../../vendor/$MANUFACTURER/$DEVICE/lpm
 adb pull /system/media/battery_charging_5.qmg ../../../vendor/$MANUFACTURER/$DEVICE/lpm
@@ -332,7 +341,9 @@ PRODUCT_COPY_FILES += \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/immvibed:system/bin/immvibed \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/drexe:system/bin/drexe \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/npsmobex:system/bin/npsmobex \\
-    vendor/__MANUFACTURER__/__DEVICE__/proprietary/libsisodrm.so:system/lib/libsisodrm.so
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/libsisodrm.so:system/lib/libsisodrm.so \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/nvcpud:system/bin/nvcpud \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/bintvoutservice:system/bin/bintvoutservice
 
 PRODUCT_COPY_FILES += \\
     vendor/__MANUFACTURER__/__DEVICE__/lpm/battery_charging_5.qmg:system/media/battery_charging_5.qmg \\

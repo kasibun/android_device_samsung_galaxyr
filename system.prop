@@ -36,7 +36,7 @@ net.tcp.buffersize.gprs=4096,8192,12288,4096,8192,12288
 ro.telephony.default_network=3
 
 # Main wifi network interface
-wifi.interface=eth0
+wifi.interface=wlan0
 
 # Wifi ap interface
 wifi.ap.interface=wl0.1
