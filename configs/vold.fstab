@@ -14,8 +14,8 @@
 dev_mount emmc /mnt/emmc 4 /devices/platform/sdhci-tegra.2/mmc_host/mmc1 encryptable_nonremovable
 
 # external sdcard
-dev_mount sdcard1 /mnt/sdcard auto /devices/platform/sdhci-tegra.3/mmc_host/mmc0/mmc0
+dev_mount sdcard /mnt/sdcard auto /devices/platform/sdhci-tegra.3/mmc_host/mmc0/mmc0
 
 # otg sdcard
-dev_mount sdcard2 /mnt/emmc/usbStorage auto /devices/platform/tegra-ehci.0/usb
+dev_mount usbdisk /mnt/emmc/usbStorage auto /devices/platform/tegra-ehci.0/usb
 #end line ## keep this line

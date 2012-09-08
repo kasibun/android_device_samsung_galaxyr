@@ -41,7 +41,7 @@ wifi.interface=wlan0
 # Wifi ap interface
 wifi.ap.interface=wl0.1
 softap.interface=wl0.1
-ro.wifi-ap.fw-path=/etc/bcm4330_aps.bin
+ro.wifi-ap.fw-path=/etc/wifi/bcm4330_apsta.bin
 
 # To fix the tethering, eth0 should not be listed here
 mobiledata.interfaces=rmnet0

@@ -21,6 +21,7 @@ on init
     mkdir /mnt/sdcard 0000 system system
     
     mkdir /preload 0771 system system
+    symlink /mnt/emmc /emmc
     symlink /mnt/sdcard /sdcard
 
    # mkdir /mnt/sdcard2 0000 system system
@@ -96,9 +97,10 @@ on boot
     chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
 
 # bluetooth MAC address programming
-    chown bluetooth bluetooth ro.bt.bdaddr_path
-    chown bluetooth bluetooth /system/etc/bluetooth
-    setprop ro.bt.bdaddr_path "/efs/bluetooth/bt_addr" 
+    exec /system/bin/bdaddr_read
+    setprop ro.bt.bdaddr_path "/efs/imei/btaddr.mac"
+    chown system bluetooth /efs/imei/btaddr.mac
+
 # UART/USB path switching
     chown system radio /sys/devices/platform/i2c-gpio.11/i2c-11/11-0025/uartsel
     chown system radio /sys/devices/platform/i2c-gpio.11/i2c-11/11-0025/usbsel
@@ -283,7 +285,7 @@ on boot
     chown system system /sys/class/camera/rear/rear_camtype
     chmod 0775 /sys/class/camera/rear/rear_camtype
     chown system system /sys/class/camera/rear/rear_flash
-    chmod 0775 /sys/class/camera/rear/rear_flash
+    chmod 0776 /sys/class/camera/rear/rear_flash
     chown system system /sys/class/camera/front/front_camtype
     chmod 0775 /sys/class/camera/front/front_camtype
 
@@ -332,7 +334,7 @@ on boot
 	chown system radio /sys/class/power_supply/battery/batt_lp_charging
 
 service wpa_supplicant /system/bin/wpa_supplicant \
-    -Dnl80211 -puse_p2p_group_interface=1 -e/data/misc/wifi/entropy.bin
+    -D nl80211 -i wlan0 -c /etc/wifi/wpa_supplicant.conf
 #   we will start as root and wpa_supplicant will switch to user wifi
 #   after setting up the capabilities required for WEXT
 #   user wifi
@@ -342,12 +344,12 @@ service wpa_supplicant /system/bin/wpa_supplicant \
     disabled
     oneshot
 
-service dhcpcd_wlan0 /system/bin/dhcpcd -ABKL
+service dhcpcd_wlan0 /system/bin/dhcpcd -ABKL wlan0
     class main
     disabled
     oneshot
 
-service dhcpcd_bnep0 /system/bin/dhcpcd -ABKL
+service dhcpcd_bnep0 /system/bin/dhcpcd -ABKL bnep0
     disabled
     oneshot
 
@@ -356,7 +358,7 @@ service dhcpcd_p2p /system/bin/dhcpcd -aABKL
     disabled
     oneshot
 
-service iprenew_wlan0 /system/bin/dhcpcd -n
+service iprenew_wlan0 /system/bin/dhcpcd -n wlan0
     class main
     disabled
     oneshot
@@ -405,7 +407,7 @@ service bugreport /system/bin/dumpstate -d -v -o /data/storage/bugreports/bugrep
     keycodes 115 114
 #BCM
 service hciattach /system/bin/brcm_patchram_plus --enable_hci --scopcm=0,2,0,0,0,0,0,0,0,0 --i2s=1,0,0,1 \
-    --baudrate 3000000 --patchramdir /etc/firmware/ --enable_lpm --tosleep=5000 /dev/ttyHS2
+    --baudrate 3000000 --patchram /etc/firmware/bcm4330.hcd --enable_lpm --tosleep 5000 /dev/ttyHS2
     user bluetooth
     group bluetooth net_bt_admin
     disabled
@@ -484,6 +486,15 @@ service immvibed /system/bin/immvibed
     group shell
     oneshot
 
+service DR-deamon /system/bin/drexe
+    class main
+    user root
+    group system radio inet net_raw
+
+service mobex-daemon /system/bin/npsmobex
+    class main
+    user system
+    group system radio inet sdcard_rw
 
 #2012-06-25 framework hang detector
 service sysmon /system/bin/sysmon 

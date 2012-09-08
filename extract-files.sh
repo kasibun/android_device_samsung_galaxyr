@@ -53,8 +53,6 @@ adb pull /system/lib/libActionShot.so ../../../vendor/$MANUFACTURER/$DEVICE/prop
 adb pull /system/lib/libarccamera.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/lib/libcaps.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/lib/libPanoraMax3.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
-adb pull /system/lib/libexifa.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
-adb pull /system/lib/libjpega.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/lib/libsecjpeginterface.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/lib/libsecjpegboard.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/lib/libsecjpegarcsoft.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
@@ -83,22 +81,13 @@ adb pull /system/etc/audio/Tx_ControlParams_WIRED_HEADSET_WIDEBAND.txt ../../../
 # adb pull /system/lib/libacc.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/libacc.so
 adb pull /system/lib/libakm.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/libakm.so
 
-# Vold and Storage
-adb pull /system/lib/libext2fs.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
-adb pull /system/lib/libext2_blkid.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
-adb pull /system/lib/libext2_com_err.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
-adb pull /system/lib/libext2_e2p.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
-adb pull /system/lib/libext2_uuid.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
-
 # WIFI
 adb pull /system/etc/wifi/bcm4330_apsta.bin ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/bcm4330_apsta.bin
 adb pull /system/etc/wifi/bcm4330_mfg.bin ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/bcm4330_mfg.bin
 adb pull /system/etc/wifi/bcm4330_p2p.bin ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/bcm4330_p2p.bin
 adb pull /system/etc/wifi/bcm4330_sta.bin ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/bcm4330_sta.bin
 adb pull /system/etc/wifi/nvram_mfg.txt ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/nvram_mfg.txt
-adb pull /system/etc/wifi/nvram_mfg.txt_murata ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/nvram_mfg.txt_murata
 adb pull /system/etc/wifi/nvram_net.txt ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/nvram_net.txt
-adb pull /system/etc/wifi/nvram_net.txt_murata ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/nvram_net.txt_murata
 adb pull /system/bin/wlandutservice ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/bin/macloader ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/bin/mfgloader ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
@@ -276,6 +265,7 @@ PRODUCT_COPY_FILES += \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/bcm4330_sta.bin:system/etc/wifi/bcm4330_sta.bin \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/nvram_mfg.txt:system/etc/wifi/nvram_mfg.txt \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/nvram_net.txt:system/etc/wifi/nvram_net.txt \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/wlandutservice:system/bin/wlandutservice \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/macloader:system/bin/macloader \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/mfgloader:system/bin/mfgloader \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/nv_hciattach:system/bin/nv_hciattach
@@ -349,7 +339,7 @@ PRODUCT_COPY_FILES += \\
     vendor/__MANUFACTURER__/__DEVICE__/lpm/battery_charging_5.qmg:system/media/battery_charging_5.qmg \\
     vendor/__MANUFACTURER__/__DEVICE__/lpm/battery_charging_10.qmg:system/media/battery_charging_10.qmg \\
     vendor/__MANUFACTURER__/__DEVICE__/lpm/battery_charging_15.qmg:system/media/battery_charging_15.qmg \\
-    vendor/__MANUFACTURER__/__DEVICE__/lpm/battery_charging_20.qmg:system/media/battery_charging_30.qmg \\
+    vendor/__MANUFACTURER__/__DEVICE__/lpm/battery_charging_20.qmg:system/media/battery_charging_20.qmg \\
     vendor/__MANUFACTURER__/__DEVICE__/lpm/battery_charging_25.qmg:system/media/battery_charging_25.qmg \\
     vendor/__MANUFACTURER__/__DEVICE__/lpm/battery_charging_30.qmg:system/media/battery_charging_30.qmg \\
     vendor/__MANUFACTURER__/__DEVICE__/lpm/battery_charging_35.qmg:system/media/battery_charging_35.qmg \\
@@ -361,6 +351,7 @@ PRODUCT_COPY_FILES += \\
     vendor/__MANUFACTURER__/__DEVICE__/lpm/battery_charging_65.qmg:system/media/battery_charging_65.qmg \\
     vendor/__MANUFACTURER__/__DEVICE__/lpm/battery_charging_70.qmg:system/media/battery_charging_70.qmg \\
     vendor/__MANUFACTURER__/__DEVICE__/lpm/battery_charging_75.qmg:system/media/battery_charging_75.qmg \\
+    vendor/__MANUFACTURER__/__DEVICE__/lpm/battery_charging_80.qmg:system/media/battery_charging_80.qmg \\
     vendor/__MANUFACTURER__/__DEVICE__/lpm/battery_charging_85.qmg:system/media/battery_charging_85.qmg \\
     vendor/__MANUFACTURER__/__DEVICE__/lpm/battery_charging_90.qmg:system/media/battery_charging_90.qmg \\
     vendor/__MANUFACTURER__/__DEVICE__/lpm/battery_charging_95.qmg:system/media/battery_charging_95.qmg \\
