@@ -64,7 +64,6 @@ PRODUCT_PACKAGES += \
     sensors.n1 \
     sensors.tegra \
     lights.n1 \
-    lights.tegra \
     gps.n1 \
     gralloc.tegra \
     overlay.tegra
@@ -87,15 +86,11 @@ DISABLE_DEXPREOPT := false
 # INIT-scripts
 PRODUCT_COPY_FILES += \
     device/samsung/galaxyr/lpm.rc:root/lpm.rc \
+    device/samsung/galaxyr/init.rc:root/init.rc \
     device/samsung/galaxyr/init.n1.rc:root/init.n1.rc \
     device/samsung/galaxyr/init.n1.usb.rc:root/init.n1.usb.rc \
     device/samsung/galaxyr/ueventd.n1.rc:root/ueventd.n1.rc \
     device/samsung/galaxyr/scripts/lpm_boot_check.sh:system/bin/lpm_boot_check.sh
-
-# debug purpose...
-ifeq ($(TARGET_PROVIDES_INIT_RC),true)
-    PRODUCT_COPY_FILES += device/samsung/galaxyr/configs/init.rc:root/init.rc
-endif
 
 # Prebuilt modules
 #     device/samsung/galaxyr/prebuilt/Si4709_driver.ko:root/lib/modules/Si4709_driver.ko
@@ -103,7 +98,8 @@ endif
 PRODUCT_COPY_FILES += \
     device/samsung/galaxyr/prebuilt/dhd.ko:root/lib/modules/dhd.ko \
     device/samsung/galaxyr/prebuilt/scsi_wait_scan.ko:root/lib/modules/scsi_wait_scan.ko \
-    device/samsung/galaxyr/prebuilt/modules.dep:root/lib/modules/modules.dep
+    device/samsung/galaxyr/prebuilt/modules.dep:root/lib/modules/modules.dep \
+    device/samsung/galaxyr/prebuilt/cbd:root/sbin/cbd
 
 # Vold and Storage
 PRODUCT_COPY_FILES += \
@@ -230,11 +226,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.dexopt-data-only=1 \
     hwui.render_dirty_regions=false \
     ro.compcache.default=0 \
-    media.stagefright.enable-player=false \
-    media.stagefright.enable-meta=false \
-    media.stagefright.enable-scan=false \
+    media.stagefright.enable-player=true \
+    media.stagefright.enable-meta=true \
+    media.stagefright.enable-scan=true \
     media.stagefright.enable-http=true \
-    media.stagefright.enable-rtsp=false \
+    media.stagefright.enable-rtsp=true \
     ro.tether.denied=false \
     ro.flash.resolution=1080
 
