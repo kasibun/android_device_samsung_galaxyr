@@ -66,7 +66,9 @@ PRODUCT_PACKAGES += \
     lights.n1 \
     gps.n1 \
     gralloc.tegra \
-    overlay.tegra
+    overlay.tegra \
+    audio.primary.n1 \
+    audio_policy.n1
 
 # BT cmdline tools
 PRODUCT_PACKAGES += \
@@ -76,7 +78,7 @@ PRODUCT_PACKAGES += \
     hciattach \
     hciconfig \
     hcitool \
-    avinfo \
+    avinfo
 
 #PRODUCT_PACKAGES += RomUpdater DroidSSHd
 
