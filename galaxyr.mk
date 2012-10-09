@@ -5,8 +5,8 @@
 # product configuration (apps).
 
 ## Inherit from those products. Most specific first.
+$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full.mk)
 
 #DEVICE_PACKAGE_OVERLAYS := device/samsung/cooper/overlay
 
@@ -118,7 +118,11 @@ PRODUCT_COPY_FILES += \
 
 # Media
 PRODUCT_COPY_FILES += \
-    device/samsung/galaxyr/configs/media_profiles.xml:system/etc/media_profiles.xml \
+    device/samsung/galaxyr/configs/media_profiles.xml:system/etc/media_profiles.xml
+
+# Audio
+PRODUCT_COPY_FILES += \
+    device/samsung/galaxyr/libaudio/audio_policy.conf:system/etc/audio_policy.conf
 
 # Shell and busybox
 PRODUCT_COPY_FILES += \
