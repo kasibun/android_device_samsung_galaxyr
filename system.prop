@@ -17,8 +17,8 @@ ro.ril.enable.dtm=1
 ro.ril.enable.managed.roaming=1
 ro.ril.gprsclass=12
 ro.ril.hep=1
-ro.ril.hsdpa.category=8
-ro.ril.hsupa.category=5
+ro.ril.hsdpa.category=14
+ro.ril.hsupa.category=6
 ro.ril.hsxpa=2
 
 ro.kernel.android.ril=yes
@@ -55,7 +55,7 @@ wifi.supplicant_scan_interval=30
 ro.bt.bdaddr_path=/efs/imei/btaddr.mac
 
 #OpenGL ES version
-ro.opengles.version = 131072
+ro.opengles.version=131072
 
 # Tegra debugging
 persist.tegra.nvlog.level=4

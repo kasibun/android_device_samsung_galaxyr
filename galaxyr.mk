@@ -4,15 +4,6 @@
 # device-specific aspects (drivers) with a device-agnostic
 # product configuration (apps).
 
-## Inherit from those products. Most specific first.
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
-
-#DEVICE_PACKAGE_OVERLAYS := device/samsung/cooper/overlay
-
-# proprietary side of the device
-#$(call inherit-product-if-exists, vendor/samsung/galaxyr/device-vendor.mk)
-
 # Discard inherited values and use our own instead.
 PRODUCT_NAME := galaxyr
 PRODUCT_DEVICE := galaxyr
@@ -80,8 +71,6 @@ PRODUCT_PACKAGES += \
     hcitool \
     avinfo
 
-#PRODUCT_PACKAGES += RomUpdater DroidSSHd
-
 # Set true if you want .odex files
 DISABLE_DEXPREOPT := false
 
@@ -127,7 +116,7 @@ PRODUCT_COPY_FILES += \
 # Shell and busybox
 PRODUCT_COPY_FILES += \
     device/samsung/galaxyr/configs/profile:system/etc/profile \
-    device/samsung/galaxyr/configs/busybox.fstab:system/etc/fstab \
+    device/samsung/galaxyr/configs/busybox.fstab:system/etc/fstab
 
 # Keylayout
 PRODUCT_COPY_FILES += \
@@ -204,8 +193,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.android.dataroaming=false \
     dalvik.vm.heapsize=64m \
     persist.service.usb.setting=0 \
-    dev.sfbootcomplete=0 \
-    persist.sys.vold.switchexternal=1
+    dev.sfbootcomplete=0
 
 # enable Google-specific location features,
 # like NetworkLocationProvider and LocationCollector

@@ -11,11 +11,11 @@
 ######################
 
 # internal sdcard
-dev_mount emmc /mnt/emmc 4 /devices/platform/sdhci-tegra.3/mmc_host/mmc0/mmc0 encryptable_nonremovable
+dev_mount emmc /mnt/emmc 4 /devices/platform/sdhci-tegra.3/mmc_host/mmc0/mmc0 nonremovable,encryptable
 
 # external sdcard
 dev_mount sdcard /mnt/sdcard auto /devices/platform/sdhci-tegra.2/mmc_host/mmc1
 
 # otg sdcard
-dev_mount usbdisk /mnt/emmc/usbStorage auto /devices/platform/tegra-ehci.0/usb
+dev_mount usbdisk /mnt/usbdisk auto /devices/platform/tegra-ehci.0/usb
 #end line ## keep this line

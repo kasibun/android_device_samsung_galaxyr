@@ -27,10 +27,10 @@ $(call inherit-product, vendor/cm/config/common_full_phone.mk)
 $(call inherit-product, device/samsung/galaxyr/full_galaxyr.mk)
 
 ## Device identifier. This must come after all inclusions
-PRODUCT_DEVICE := Galaxy-R
+PRODUCT_DEVICE := galaxyr
 PRODUCT_NAME := cm_galaxyr
 PRODUCT_BRAND := Samsung
 PRODUCT_MODEL := GT-I9103
 
 #Set build fingerprint / ID / Prduct Name ect.
-PRODUCT_BUILD_PROP_OVERRIDES += PRODUCT_NAME=GT-I9103 TARGET_DEVICE=GT-I9103 BUILD_FINGERPRINT=samsung/GT-I9103/GT-I9103:4.1.1/JRO03C/XXLPQ:eng/Adam77Root-test-keys PRIVATE_BUILD_DESC="GT-I9103-eng 4.1.1 JRO03C XXLPQ Adam77Root-test-keys"
+PRODUCT_BUILD_PROP_OVERRIDES += PRODUCT_NAME=GT-I9103 TARGET_DEVICE=GT-I9103 BUILD_FINGERPRINT=samsung/GT-I9103/GT-I9103:4.1.2/JRO03C/XXLPQ:eng/Adam77Root-test-keys PRIVATE_BUILD_DESC="GT-I9103-eng 4.1.2 JRO03C XXLPQ Adam77Root-test-keys"
