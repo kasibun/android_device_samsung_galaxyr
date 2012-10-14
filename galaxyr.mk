@@ -107,7 +107,8 @@ PRODUCT_COPY_FILES += \
 
 # Media
 PRODUCT_COPY_FILES += \
-    device/samsung/galaxyr/configs/media_profiles.xml:system/etc/media_profiles.xml
+    device/samsung/galaxyr/configs/media_profiles.xml:system/etc/media_profiles.xml \
+    device/samsung/galaxyr/configs/media_codecs.xml:system/etc/media_codecs.xml
 
 # Audio
 PRODUCT_COPY_FILES += \
@@ -193,7 +194,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.android.dataroaming=false \
     dalvik.vm.heapsize=64m \
     persist.service.usb.setting=0 \
-    dev.sfbootcomplete=0
+    dev.sfbootcomplete=0 \
+    persist.sys.vold.switchexternal=1
 
 # enable Google-specific location features,
 # like NetworkLocationProvider and LocationCollector
@@ -232,6 +234,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_TAGS += dalvik.gc.type-precise
 
 PRODUCT_LOCALES += hdpi
+
+# Device uses high-density artwork where available
+PRODUCT_AAPT_CONFIG := normal hdpi
+PRODUCT_AAPT_PREF_CONFIG := hdpi
+
+$(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
 
 # See comment at the top of this file. This is where the other
 # half of the device-specific product definition file takes care
