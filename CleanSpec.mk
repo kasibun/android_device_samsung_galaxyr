@@ -47,3 +47,4 @@
 # ************************************************
 # NEWER CLEAN STEPS MUST BE AT THE END OF THE LIST
 # ************************************************
+$(call add-clean-step, rm $(OUT_DIR)/target/product/galaxyr/CM10-*.zip.md5sum
