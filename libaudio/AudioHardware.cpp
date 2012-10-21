@@ -965,6 +965,7 @@ struct pcm *AudioHardware::openPcmOut_l()
             start_threshold : 0,
             stop_threshold : 0,
             silence_threshold : 0,
+	    avail_min : 0,
         };
 
         TRACE_DRIVER_IN(DRV_PCM_OPEN)
@@ -1167,6 +1168,8 @@ status_t AudioHardware::setInputSource_l(audio_source source)
                  switch (source) {
                      case AUDIO_SOURCE_DEFAULT: // intended fall-through
                      case AUDIO_SOURCE_MIC:
+			 sourceName = inputPathNameDefault;
+                         break;
                      case AUDIO_SOURCE_CAMCORDER:
                          sourceName = inputPathNameCamcorder;
                          break;
@@ -2120,6 +2123,7 @@ status_t AudioHardware::AudioStreamInALSA::open_l()
         start_threshold : 0,
         stop_threshold : 0,
         silence_threshold : 0,
+	avail_min : 0,
     };
 
     ALOGV("open pcm_in driver");

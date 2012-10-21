@@ -44,7 +44,7 @@ softap.interface=wlan0
 ro.wifi-ap.fw-path=/etc/wifi/bcm4330_apsta.bin
 
 # To fix the tethering, eth0 should not be listed here
-mobiledata.interfaces=rmnet0
+mobiledata.interfaces=rmnet0,rmnet1,rmnet2
 
 # Time between scans in seconds. Keep it high to minimize battery drain.
 # This only affects the case in which there are remembered access points,
@@ -91,4 +91,3 @@ ro.additionalmounts=/mnt/emmc
 ro.secure=0
 ro.debuggable=1
 ro.com.google.clientidbase=android-samsung
-

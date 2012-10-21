@@ -250,11 +250,10 @@
 
          Must be overridden in platform specific overlays -->
     <integer-array name="config_autoBrightnessLevels">
-	<item>7</item>
-        <item>94</item>
-        <item>208</item>
-        <item>458</item>
-        <item>2223</item>
+		<item>15</item>
+		<item>100</item>
+		<item>3000</item>
+		<item>8000</item>
     </integer-array>
 
     <!-- Array of output values for LCD backlight corresponding to the LUX values
@@ -262,12 +261,11 @@
          than the size of the config_autoBrightnessLevels array.
          This must be overridden in platform specific overlays -->
     <integer-array name="config_autoBrightnessLcdBacklightValues">
-	<item>10</item>
-        <item>35</item>
-        <item>55</item>
-        <item>70</item>
-        <item>70</item>
-        <item>250</item>
+		<item>24</item>
+		<item>48</item>
+		<item>108</item>
+		<item>206</item>
+		<item>246</item>
     </integer-array>
 
     <!-- Array of output values for button backlight corresponding to the LUX values
@@ -275,12 +273,11 @@
          than the size of the config_autoBrightnessLevels array.
          This must be overridden in platform specific overlays -->
     <integer-array name="config_autoBrightnessButtonBacklightValues">
-	<item>255</item>
-        <item>255</item>
-        <item>255</item>
-        <item>0</item>
-        <item>0</item>
-        <item>0</item>
+		<item>3</item>
+		<item>3</item>
+		<item>3</item>
+		<item>3</item>
+		<item>0</item>
     </integer-array>
 
     <!-- Array of output values for keyboard backlight corresponding to the LUX values
@@ -288,12 +285,11 @@
          than the size of the config_autoBrightnessLevels array.
          This must be overridden in platform specific overlays -->
     <integer-array name="config_autoBrightnessKeyboardBacklightValues">
-	<item>0</item>
-        <item>0</item>
-        <item>0</item>
-        <item>0</item>
-        <item>0</item>
-        <item>0</item>
+		<item>0</item>
+		<item>0</item>
+		<item>0</item>
+		<item>0</item>
+		<item>0</item>
     </integer-array>
 
     <!-- Minimum screen brightness allowed by the power manager. -->
