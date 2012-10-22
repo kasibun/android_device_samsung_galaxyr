@@ -1,23 +1,13 @@
-diff --git a/core/Makefile b/core/Makefile
-index b7f92ee..34e1178 100644
---- a/core/Makefile
-+++ b/core/Makefile
-@@ -803,6 +803,10 @@ $(TARGET_RECOVERY_ROOT_TIMESTAMP): $(INTERNAL_RECOVERY_FILES) \
- 	mkdir -p $(TARGET_RECOVERY_ROOT_OUT)/tmp
- 	echo Copying baseline ramdisk...
- 	cp -R $(TARGET_ROOT_OUT) $(TARGET_RECOVERY_OUT)
+--- a/build/core/Makefile	2012-10-22 11:01:13.204635824 +0200
++++ b/build/core/Makefile	2012-10-22 10:58:50.308631884 +0200
+@@ -717,6 +717,10 @@
+ 	cp -f $(recovery_initrc) $(TARGET_RECOVERY_ROOT_OUT)/init.rc
+ 	cp -f $(recovery_binary) $(TARGET_RECOVERY_ROOT_OUT)/sbin/
+ 	rm -f $(TARGET_RECOVERY_ROOT_OUT)/init.*.rc
 +ifneq ($(BOARD_RECOVERY_RAMDISK_EXTRA_SCRIPT),)
 +	@echo extra recovery ramdisk step...
-+	-$(BOARD_RECOVERY_RAMDISK_EXTRA_SCRIPT)
++	$(BOARD_RECOVERY_RAMDISK_EXTRA_SCRIPT)
 +endif
- ifneq ($(BOARD_USES_COMBINED_RECOVERY),true)
- 	rm $(TARGET_RECOVERY_ROOT_OUT)/init*.rc
- endif
-@@ -823,6 +827,7 @@ endif
- 	$(foreach item,$(recovery_fstab), \
- 	  cp -f $(item) $(TARGET_RECOVERY_ROOT_OUT)/etc/recovery.fstab)
- 	cp $(RECOVERY_INSTALL_OTA_KEYS) $(TARGET_RECOVERY_ROOT_OUT)/res/keys
-+
- ifeq ($(BOARD_USES_COMBINED_RECOVERY),true)
- 	cp $(INSTALLED_DEFAULT_PROP_TARGET) $(TARGET_RECOVERY_ROOT_OUT)/default.prop
- 	rm -rf $(TARGET_RECOVERY_ROOT_OUT)/misc
+ 	mkdir -p $(TARGET_RECOVERY_ROOT_OUT)/system/bin
+ 	cp -rf $(recovery_resources_common) $(TARGET_RECOVERY_ROOT_OUT)/
+ 	$(foreach item,$(recovery_resources_private), \
