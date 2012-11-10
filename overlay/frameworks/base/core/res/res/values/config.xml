@@ -94,6 +94,10 @@
         <item>wlan0</item>
     </string-array>
 
+    <!-- Boolean indicating whether the start command should be called on the wireless interface
+         when starting the SoftAp -->
+    <bool name="config_wifiApStartInterface">true</bool>
+
     <!-- List of regexpressions describing the interface (if any) that represent tetherable
     bluetooth interfaces. If the device doesn't want to support tethering over bluetooth this
     should be empty. -->
@@ -336,6 +340,8 @@
     <!-- Our amoled doesn't animate well. -->
     <bool name="config_animateScreenLights">false</bool>
 
+    <integer name="config_screenOnAnimation">400</integer>
+
     <!-- Package name providing network location support. -->
     <string name="config_networkLocationProviderPackageName" translatable="false">com.google.android.location</string>
 
@@ -348,7 +354,7 @@
     <!-- LUN file to be used by legacy USB manager.
 	 The existence of this file will be used to determine in the
 	 legacy USB manager should be started. -->
-    <string name="config_legacyUmsLunFile">/sys/devices/platform/usb_mass_storage/lun0/file</string>
+    <string name="config_legacyUmsLunFile">/sys/devices/platform/fsl-tegra-udc/gadget/lun0/file</string>
 
     <!-- Hardware 'face' keys present on the device, stored as a bit field.
 	 This integer should equal the sum of the corresponding value for each

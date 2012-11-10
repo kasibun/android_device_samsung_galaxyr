@@ -21,8 +21,6 @@
 
 namespace android_audio_legacy {
 
-
-
 // ----------------------------------------------------------------------------
 // AudioPolicyManager for crespo platform
 // Common audio policy manager code is implemented in AudioPolicyManagerBase class

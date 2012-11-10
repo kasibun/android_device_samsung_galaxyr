@@ -3,7 +3,7 @@ on early-init
 
 on init
     export PATH /sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin
-    export LD_LIBRARY_PATH /vendor/lib:/system/lib
+    export LD_LIBRARY_PATH .:/sbin:/vendor/lib:/system/lib
     export ANDROID_ROOT /system
     export ANDROID_DATA /data
     export EXTERNAL_STORAGE /sdcard
@@ -20,7 +20,6 @@ on init
 
 on fs
     mount tmpfs tmpfs /tmp mode=0755
-    mount ext4 /dev/block/mmcblk0p2 /system wait
 
     # SEC_DMCRYPT move mounting efs befor apply_disk_policy, and set group id to system
     mount ext4 /dev/block/mmcblk0p1 /efs nosuid nodev noatime wait 
@@ -42,8 +41,6 @@ on boot
     hostname localhost
     domainname localdomain
 
-    setprop service.adb.root 1
-
     write /sys/class/leds/button-backlight/brightness 127
 
     class_start default
@@ -57,10 +54,24 @@ service console /sbin/sh
     disabled
     group log
     
-on property:ro.debuggable=1
+on property:ro.secure=0
     start console
 
-# We always start adbd, even if we are on a user build.
-service adbd /sbin/adbd recovery
-
 service recovery /sbin/recovery
+
+service adbd /sbin/adbd recovery
+    disabled
+
+# Always start adbd on userdebug and eng builds
+# In recovery, always run adbd as root.
+on property:ro.debuggable=1
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/idVendor 04E8
+    write /sys/class/android_usb/android0/idProduct 685E
+    write /sys/class/android_usb/android0/functions adb
+    write /sys/class/android_usb/android0/iManufacturer $ro.product.manufacturer
+    write /sys/class/android_usb/android0/iProduct $ro.product.model
+    write /sys/class/android_usb/android0/iSerial $ro.serialno
+    setprop service.adb.root 1
+    start adbd
+    write /sys/class/android_usb/android0/enable 1

@@ -22,9 +22,6 @@
 	<string name="touchFocusParameter">touch-focus</string>
 	<bool name="touchFocusNeedsRect">false</bool>
 
-        <!-- Samsung Camcorder Mode -->
-        <bool name="needsSamsungCamMode">true</bool>
-
         <!-- Samsung Continuous Autofocus -->
         <bool name="needsSamsungContinuousAf">true</bool>
 

@@ -22,17 +22,16 @@
 #include <utils/KeyedVector.h>
 #include <hardware_legacy/AudioPolicyManagerBase.h>
 
-
 namespace android_audio_legacy {
 
-class AudioPolicyManager: public AudioPolicyManagerBase
+class AudioPolicyManager : public AudioPolicyManagerBase
 {
 
 public:
-                AudioPolicyManager(AudioPolicyClientInterface *clientInterface)
-                : AudioPolicyManagerBase(clientInterface) {}
+	AudioPolicyManager(AudioPolicyClientInterface *clientInterface)
+		: AudioPolicyManagerBase(clientInterface) {}
 
-        virtual ~AudioPolicyManager() {}
+	virtual ~AudioPolicyManager() {}
 
 };
 };

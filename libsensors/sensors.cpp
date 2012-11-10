@@ -73,7 +73,7 @@
 #define USE_AKM
 #define USE_ORIENT
 #define USE_KXT
-#define USE_MPU
+//#define USE_MPU
 #define USE_NCT
 
 /*****************************************************************************/
@@ -369,7 +369,7 @@ static int open_sensors(const struct hw_module_t* module, const char* id,
 
         memset(&dev->device, 0, sizeof(sensors_poll_device_t));
 
-        dev->device.common.tag = HARDWARE_DEVICE_TAG;
+        dev->device.common.tag      = HARDWARE_DEVICE_TAG;
         dev->device.common.version  = 0;
         dev->device.common.module   = const_cast<hw_module_t*>(module);
         dev->device.common.close    = poll__close;

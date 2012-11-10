@@ -25,4 +25,3 @@ LOCAL_SHARED_LIBRARIES := libcutils
 LOCAL_MODULE := bdaddr_read
 
 include $(BUILD_EXECUTABLE)
-

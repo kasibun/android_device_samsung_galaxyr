@@ -44,6 +44,11 @@ PRODUCT_PACKAGES += \
     Camera \
     librs_jni
 
+# Charger
+PRODUCT_PACKAGES += \
+    charger \
+    charger_res_images
+
 # Filesystem management tools
 PRODUCT_PACKAGES += \
     static_busybox \
@@ -53,11 +58,11 @@ PRODUCT_PACKAGES += \
 # HAL
 PRODUCT_PACKAGES += \
     sensors.n1 \
-    sensors.tegra \
     lights.n1 \
-    gps.n1 \
+    gps.tegra \
+    camera.tegra \
     gralloc.tegra \
-    overlay.tegra \
+    hwcomposer.tegra \
     audio.primary.n1 \
     audio_policy.n1
 
@@ -80,8 +85,7 @@ PRODUCT_COPY_FILES += \
     device/samsung/galaxyr/init.rc:root/init.rc \
     device/samsung/galaxyr/init.n1.rc:root/init.n1.rc \
     device/samsung/galaxyr/init.n1.usb.rc:root/init.n1.usb.rc \
-    device/samsung/galaxyr/ueventd.n1.rc:root/ueventd.n1.rc \
-    device/samsung/galaxyr/scripts/lpm_boot_check.sh:system/bin/lpm_boot_check.sh
+    device/samsung/galaxyr/ueventd.n1.rc:root/ueventd.n1.rc
 
 # Prebuilt modules
 #     device/samsung/galaxyr/prebuilt/Si4709_driver.ko:root/lib/modules/Si4709_driver.ko
@@ -114,9 +118,18 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/samsung/galaxyr/libaudio/audio_policy.conf:system/etc/audio_policy.conf
 
+# OMX
+PRODUCT_COPY_FILES += \
+    device/samsung/galaxyr/configs/somxreg.conf:system/etc/somxreg.conf
+
+# Camera
+PRODUCT_COPY_FILES += \
+    device/samsung/galaxyr/configs/nvcamera.conf:system/etc/nvcamera.conf
+
 # Shell and busybox
 PRODUCT_COPY_FILES += \
-    device/samsung/galaxyr/configs/profile:system/etc/profile \
+    device/samsung/galaxyr/configs/bashrc:system/etc/bash/bashrc \
+    device/samsung/galaxyr/configs/mkshrc:system/etc/mkshrc \
     device/samsung/galaxyr/configs/busybox.fstab:system/etc/fstab
 
 # Keylayout
@@ -187,9 +200,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Note that the only such settings should be the ones that are too low-level to
 # be reachable from resources or other mechanisms.
 PRODUCT_PROPERTY_OVERRIDES += \
-    wifi.supplicant_scan_interval=30 \
     ro.board.platform=tegra \
-    ro.sf.lcd_density=240 \
     ro.telephony.sends_barcount=1 \
     ro.com.android.dataroaming=false \
     dalvik.vm.heapsize=64m \
@@ -216,8 +227,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.setupwizard.enable_bypass=1 \
     ro.media.dec.jpeg.memcap=20000000 \
     dalvik.vm.lockprof.threshold=500 \
-    dalvik.vm.dexopt-flags=m=y \
-    dalvik.vm.heapsize=64m \
     dalvik.vm.execution-mode=int:jit \
     dalvik.vm.dexopt-data-only=1 \
     hwui.render_dirty_regions=false \

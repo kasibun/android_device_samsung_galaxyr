@@ -17,6 +17,4 @@ run_program("/sbin/busybox", "sync");
 
 show_progress(0.300000, 0);
 
-
 ui_print("Done!");
-

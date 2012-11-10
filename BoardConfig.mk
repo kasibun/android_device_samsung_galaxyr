@@ -63,6 +63,9 @@ BOARD_SYSTEMIMAGE_PARTITION_SIZE   := 629145600
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 2147483648
 BOARD_FLASH_BLOCK_SIZE := 4096
 
+# Use this flag if the board has a ext4 partition larger than 2gb
+BOARD_HAS_LARGE_FILESYSTEM := true
+
 TARGET_PREBUILT_KERNEL := device/samsung/galaxyr/kernel
 
 TARGET_NO_KERNEL := false
@@ -71,7 +74,7 @@ TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
 
 # RIL
-BOARD_USES_LIBSECRIL_STUB := true
+BOARD_USES_LIBSECRIL_STUB := false
 
 # 3G
 BOARD_MOBILEDATA_INTERFACE_NAME := "rmnet0"
@@ -81,29 +84,17 @@ BOARD_USES_GENERIC_AUDIO := false
 TARGET_PROVIDES_LIBAUDIO := false # We must build it.
 
 # Camera
-# USE_CAMERA_STUB := true
-BOARD_CAMERA_USE_GETBUFFERINFO := true
-#BOARD_USE_CAF_LIBCAMERA := true
-BOARD_USE_CAF_LIBCAMERA_GB_REL := true
-TARGET_SPECIFIC_HEADER_PATH := device/samsung/galaxyr
 BOARD_SECOND_CAMERA_DEVICE := true
-
-BOARD_USES_HW_MEDIARECORDER := false
-BOARD_USES_HW_MEDIASCANNER := false
-BOARD_USES_HW_MEDIAPLUGINS := false
-
-TARGET_OVERLAY_ALWAYS_DETERMINES_FORMAT := true
-TARGET_USES_GL_VENDOR_EXTENSIONS := true
-TARGET_ELECTRONBEAM_FRAMES := 15
-BOARD_USE_SCREENCAP := true
-
-ifeq ($(USE_CAMERA_STUB),false)
-BOARD_CAMERA_LIBRARIES := libcamera
-endif
 
 # Graphics
 BOARD_EGL_CFG := device/samsung/galaxyr/configs/egl.cfg
 USE_OPENGL_RENDERER := true
+
+# Enable WEBGL in WebKit
+ENABLE_WEBGL := true
+
+# HWComposer
+BOARD_USES_HWCOMPOSER := true
 
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
@@ -122,12 +113,6 @@ BOARD_HAS_EXTRA_SYS_PROPS := true
 BOARD_HAVE_FM_RADIO := true
 BOARD_GLOBAL_CFLAGS += -DHAVE_FM_RADIO
 BOARD_FM_DEVICE := si4709
-
-# Sensors
-#BOARD_USES_GENERIC_INVENSENSE := true
-
-# GPS
-#BOARD_USES_GPSWRAPPER := true
 
 # Wifi related defines
 WPA_BUILD_SUPPLICANT        	:= true
@@ -151,13 +136,14 @@ WIFI_BAND                       := 802_11_ABG
 BOARD_LEGACY_NL80211_STA_EVENTS := true
 
 # Releasetools
-TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := ./device/samsung/galaxyr/releasetools/galaxyr_ota_from_target_files
-TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := ./device/samsung/galaxyr/releasetools/galaxyr_img_from_target_files
+TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/samsung/galaxyr/releasetools/galaxyr_ota_from_target_files
+TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := device/samsung/galaxyr/releasetools/galaxyr_img_from_target_files
 
 # Custom squisher, final step script
-TARGET_CUSTOM_RELEASETOOL := ./device/samsung/galaxyr/releasetools/squisher
+TARGET_CUSTOM_RELEASETOOL := device/samsung/galaxyr/releasetools/squisher
 
-# TARGET_PROVIDES_INIT_RC := true
+# Use our init.rc
+TARGET_PROVIDES_INIT_RC := true
 
 # Assert
 TARGET_OTA_ASSERT_DEVICE := galaxyr,GT-I9103,n1
@@ -166,21 +152,38 @@ TARGET_OTA_ASSERT_DEVICE := galaxyr,GT-I9103,n1
 BOARD_VOLD_MAX_PARTITIONS := 12
 BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
 BOARD_VOLD_DISC_HAS_MULTIPLE_MAJORS := true
-TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/usb_mass_storage/lun%d/file"
+#BOARD_USE_USB_MASS_STORAGE_SWITCH := true
+TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/fsl-tegra-udc/gadget/lun%d/file"
 
 BOARD_HAS_SDCARD_INTERNAL := true
-BOARD_SDEXT_DEVICE := /dev/block/mmcblk1p1
+BOARD_SDEXT_DEVICE := /dev/block/mmcblk1p2
+
+# LPM
+BOARD_CHARGING_MODE_BOOTING_LPM := "/sys/class/power_supply/battery/batt_lp_charging"
+BOARD_BATTERY_DEVICE_NAME := "battery"
+BOARD_CHARGER_RES := device/samsung/galaxyr/res/charger
+
+# EMMC brickbug is removed in the kernel, but be better safe than sorry.
+BOARD_SUPPRESS_EMMC_WIPE := true
 
 # Recovery
-TARGET_RECOVERY_INITRC := ./device/samsung/galaxyr/recovery.rc
+TARGET_RECOVERY_INITRC := device/samsung/galaxyr/recovery.rc
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/samsung/galaxyr/recovery/recovery_keys.c
 BOARD_CUSTOM_GRAPHICS := ../../../device/samsung/galaxyr/recovery/graphics.c
 
-BOARD_USE_USB_MASS_STORAGE_SWITCH := true
-BOARD_UMS_LUNFILE := "/sys/devices/platform/usb_mass_storage/lun0/file"
+BOARD_UMS_LUNFILE := "/sys/devices/platform/fsl-tegra-udc/gadget/lun0/file"
 BOARD_USES_MMCUTILS := true
 #BOARD_HAS_NO_MISC_PARTITION := true
-#BOARD_HAS_NO_SELECT_BUTTON := true
+BOARD_HAS_NO_SELECT_BUTTON := true
 
-# Use this flag if the board has a ext4 partition larger than 2gb
-BOARD_HAS_LARGE_FILESYSTEM := true
+# TWRP
+DEVICE_RESOLUTION := 480x800
+
+TW_INTERNAL_STORAGE_PATH := "/emmc"
+TW_INTERNAL_STORAGE_MOUNT_POINT := "emmc"
+TW_EXTERNAL_STORAGE_PATH := "/sdcard"
+TW_EXTERNAL_STORAGE_MOUNT_POINT := "sdcard"
+
+TW_NO_REBOOT_BOOTLOADER := true
+TW_DEFAULT_EXTERNAL_STORAGE := true
+TW_FLASH_FROM_STORAGE := true
