@@ -19,19 +19,16 @@
 DEVICE=galaxyr
 MANUFACTURER=samsung
 
-# if [ ! -d ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/hw ]; then
-
 # HAL
-mkdir -p ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/hw
+mkdir -p ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/hw/
 adb pull /system/lib/hw/gralloc.tegra.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/hw/
 adb pull /system/lib/hw/hwcomposer.tegra.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/hw/
 adb pull /system/lib/hw/gps.tegra.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/hw/
 adb pull /system/lib/hw/camera.tegra.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/hw/
-adb pull /system/lib/hw/lights.n1.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/hw/
 adb pull /system/lib/hw/sensors.n1.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/hw/
 
 # EGL
-mkdir -p ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/egl
+mkdir -p ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/egl/
 adb pull /system/lib/egl/libEGL_tegra.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/egl/
 adb pull /system/lib/egl/libEGL_perfhud.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/egl/
 adb pull /system/lib/egl/libGLESv1_CM_tegra.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/lib/egl/
@@ -41,19 +38,22 @@ adb pull /system/lib/egl/libGLESv2_perfhud.so ../../../vendor/$MANUFACTURER/$DEV
 
 # RIL files
 adb pull /system/lib/libril.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
-adb pull /system/lib/libsecril-client.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/lib/libsec-ril.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
+adb pull /system/lib/libsecril-client.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 
 # Sensors
-adb pull /system/lib/libakm.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/libakm.so
+adb pull /system/lib/libakm.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
+adb pull /system/lib/libmpl.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
+adb pull /system/lib/libmllite.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
+adb pull /system/lib/libmlplatform.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 
 # WIFI
-adb pull /system/etc/wifi/bcm4330_apsta.bin ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/bcm4330_apsta.bin
-adb pull /system/etc/wifi/bcm4330_mfg.bin ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/bcm4330_mfg.bin
-adb pull /system/etc/wifi/bcm4330_p2p.bin ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/bcm4330_p2p.bin
-adb pull /system/etc/wifi/bcm4330_sta.bin ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/bcm4330_sta.bin
-adb pull /system/etc/wifi/nvram_mfg.txt ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/nvram_mfg.txt
-adb pull /system/etc/wifi/nvram_net.txt ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/nvram_net.txt
+adb pull /system/etc/wifi/bcm4330_apsta.bin ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
+adb pull /system/etc/wifi/bcm4330_mfg.bin ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
+adb pull /system/etc/wifi/bcm4330_p2p.bin ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
+adb pull /system/etc/wifi/bcm4330_sta.bin ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
+adb pull /system/etc/wifi/nvram_mfg.txt ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
+adb pull /system/etc/wifi/nvram_net.txt ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/bin/wlandutservice ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/bin/macloader ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/bin/mfgloader ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
@@ -111,7 +111,7 @@ adb pull /system/lib/libcgdrv.so ../../../vendor/$MANUFACTURER/$DEVICE/proprieta
 adb pull /system/lib/libardrv_dynamic.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 
 # Firmwares
-adb pull /system/etc/firmware ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/firmware
+adb pull /system/etc/firmware/ ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/firmware/
 
 # OMX
 adb pull /system/lib/libsomxcmn.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
@@ -139,17 +139,29 @@ adb pull /system/lib/libsthmb.so ../../../vendor/$MANUFACTURER/$DEVICE/proprieta
 
 adb pull /system/lib/libstagefrighthw.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 
+# Camera
+adb pull /system/cameradata/ ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/cameradata/
+
+# BT
+adb pull /system/bin/brcm_patchram_plus ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
+chmod 755 ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/brcm_patchram_plus
+
+# TVOut
+adb pull /system/bin/bintvoutservice ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
+adb pull /system/lib/libtvoutinterface.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
+adb pull /system/lib/libtvoutservice.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
+adb pull /system/lib/libtvout_jni.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
+chmod 755 ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/bintvoutservice
+
 # Other files
 adb pull /system/bin/immvibed ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/bin/drexe ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/bin/npsmobex ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 adb pull /system/bin/nvcpud ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
-adb pull /system/bin/bintvoutservice ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/
 chmod 755 ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/immvibed
 chmod 755 ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/drexe
 chmod 755 ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/npsmobex
 chmod 755 ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/nvcpud
-chmod 755 ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/bintvoutservice
 
 # fi
 
@@ -180,7 +192,8 @@ PRODUCT_COPY_FILES += \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/lib/hw/gralloc.tegra.so:system/lib/hw/gralloc.tegra.so \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/lib/hw/hwcomposer.tegra.so:system/lib/hw/hwcomposer.tegra.so \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/lib/hw/gps.tegra.so:system/lib/hw/gps.tegra.so \\
-    vendor/__MANUFACTURER__/__DEVICE__/proprietary/lib/hw/camera.tegra.so:system/lib/hw/camera.tegra.so
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/lib/hw/camera.tegra.so:system/lib/hw/camera.tegra.so \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/lib/hw/sensors.n1.so:system/lib/hw/sensors.n1.so
 
 # EGL
 PRODUCT_COPY_FILES += \\
@@ -193,13 +206,16 @@ PRODUCT_COPY_FILES += \\
 
 # RIL files
 PRODUCT_COPY_FILES += \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/libril.so:system/lib/libril.so \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/libsec-ril.so:system/lib/libsec-ril.so \\
-    vendor/__MANUFACTURER__/__DEVICE__/proprietary/libsecril-client.so:system/lib/libsecril-client.so \\
-    vendor/__MANUFACTURER__/__DEVICE__/proprietary/libril.so:system/lib/libril.so
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/libsecril-client.so:system/lib/libsecril-client.so
 
 # SENSORS
 PRODUCT_COPY_FILES += \\
-    vendor/__MANUFACTURER__/__DEVICE__/proprietary/libakm.so:system/lib/libakm.so
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/libakm.so:system/lib/libakm.so \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/libmpl.so:system/lib/libmpl.so \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/libmllite.so:system/lib/libmllite.so \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/libmlplatform.so:system/lib/libmlplatform.so
 
 # WIFI
 PRODUCT_COPY_FILES += \\
@@ -287,7 +303,7 @@ PRODUCT_COPY_FILES += \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/libsomxcore.so:system/lib/libsomxcore.so \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/libsomxaacd.so:system/lib/libsomxaacd.so \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/libsomxaace.so:system/lib/libsomxaace.so \\
-    vendor/__MANUFACTURER__/__DEVICE__/proprietary/libsomxac3d.so:system/lib/libsomxac3.so \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/libsomxac3d.so:system/lib/libsomxac3d.so \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/libsomxamrd.so:system/lib/libsomxamrd.so \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/libsomxflacd.so:system/lib/libsomxflacd.so \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/libsomxmp3d.so:system/lib/libsomxmp3d.so \\
@@ -307,17 +323,31 @@ PRODUCT_COPY_FILES += \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/libsAMRWB.so:system/lib/libsAMRWB.so \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/libsthmb.so:system/lib/libsthmb.so
 
-
 PRODUCT_COPY_FILES += \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/libstagefrighthw.so:system/lib/libstagefrighthw.so
+
+# Camera
+PRODUCT_COPY_FILES += \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/cameradata/datapattern_420sp.yuv:system/cameradata/datapattern_420sp.yuv \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/cameradata/datapattern_front_420sp.yuv:system/cameradata/datapattern_front_420sp.yuv
+
+# BT
+PRODUCT_COPY_FILES += \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/brcm_patchram_plus:system/bin/brcm_patchram_plus
+
+# TVOut
+PRODUCT_COPY_FILES += \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/bintvoutservice:system/bin/bintvoutservice \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/libtvoutinterface.so:system/lib/libtvoutinterface.so \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/libtvoutservice.so:system/lib/libtvoutservice.so \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/libtvout_jni.so:system/lib/libtvout_jni.so
 
 # Other files
 PRODUCT_COPY_FILES += \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/immvibed:system/bin/immvibed \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/drexe:system/bin/drexe \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/npsmobex:system/bin/npsmobex \\
-    vendor/__MANUFACTURER__/__DEVICE__/proprietary/nvcpud:system/bin/nvcpud \\
-    vendor/__MANUFACTURER__/__DEVICE__/proprietary/bintvoutservice:system/bin/bintvoutservice
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/nvcpud:system/bin/nvcpud
 
 EOF
 

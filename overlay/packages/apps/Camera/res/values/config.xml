@@ -25,8 +25,11 @@
         <!-- Samsung Continuous Autofocus -->
         <bool name="needsSamsungContinuousAf">true</bool>
 
-        <!-- Samsung Special Settings -->
-        <bool name="needsSamsungSpecialSettings">true</bool>
+        <!-- Samsung Camera Settings -->
+        <bool name="hasSamsungCamSettings">true</bool>
+
+        <!-- Allows setting video size before recording starts -->
+        <bool name="needsEarlyVideoSize">true</bool>
 
 	<!-- FFC parameter filtering -->
 	<bool name="ffc_canFocus">false</bool>

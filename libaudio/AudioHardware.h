@@ -62,16 +62,16 @@ namespace android_audio_legacy {
 #define AUDIO_HW_OUT_PERIOD_BYTES (AUDIO_HW_OUT_PERIOD_SZ * 2 * sizeof(int16_t))
 
 // Default audio input sample rate
-#define AUDIO_HW_IN_SAMPLERATE 8000
+#define AUDIO_HW_IN_SAMPLERATE 44100
 // Default audio input channel mask
-#define AUDIO_HW_IN_CHANNELS (AudioSystem::CHANNEL_IN_MONO)
+#define AUDIO_HW_IN_CHANNELS (AudioSystem::CHANNEL_IN_STEREO)
 // Default audio input sample format
 #define AUDIO_HW_IN_FORMAT (AudioSystem::PCM_16_BIT)
 // Kernel pcm in buffer size in frames at 44.1kHz (before resampling)
-#define AUDIO_HW_IN_PERIOD_SZ 2048
-#define AUDIO_HW_IN_PERIOD_CNT 2
-// Default audio input buffer size in bytes (8kHz mono)
-#define AUDIO_HW_IN_PERIOD_BYTES ((AUDIO_HW_IN_PERIOD_SZ*sizeof(int16_t))/8)
+#define AUDIO_HW_IN_PERIOD_SZ 1024
+#define AUDIO_HW_IN_PERIOD_CNT 4
+// Default audio input buffer size in bytes
+#define AUDIO_HW_IN_PERIOD_BYTES (AUDIO_HW_IN_PERIOD_SZ * 2 * sizeof(int16_t))
 
 
 class AudioHardware : public AudioHardwareBase
@@ -93,9 +93,7 @@ public:
 
     virtual status_t setVoiceVolume(float volume);
     virtual status_t setMasterVolume(float volume);
-#ifdef HAVE_FM_RADIO
     virtual status_t setFmVolume(float volume);
-#endif
 
     virtual status_t setMode(int mode);
 
@@ -120,18 +118,16 @@ public:
     virtual size_t getInputBufferSize(
         uint32_t sampleRate, int format, int channelCount);
 
-            int  mode() { return mMode; }
+            int mode() { return mMode; }
             const char *getOutputRouteFromDevice(uint32_t device);
             const char *getInputRouteFromDevice(uint32_t device);
             const char *getVoiceRouteFromDevice(uint32_t device);
 
             status_t setIncallPath_l(uint32_t device);
 
-#ifdef HAVE_FM_RADIO
             void enableFMRadio();
             void disableFMRadio();
             status_t setFMRadioPath_l(uint32_t device);
-#endif
 
             status_t setInputSource_l(audio_source source);
 
@@ -198,11 +194,9 @@ private:
     status_t        connectRILDIfRequired(void);
     struct echo_reference_itfe *mEchoReference;
 
-#ifdef HAVE_FM_RADIO
     int             mFmFd;
     float           mFmVolume;
     bool            mFmResumeAfterCall;
-#endif
 
     //  trace driver operations for dump
     int             mDriverOp;
@@ -241,9 +235,9 @@ private:
         virtual uint32_t latency()
             const { return (1000 * AUDIO_HW_OUT_PERIOD_CNT *
                             (bufferSize()/frameSize()))/sampleRate() +
-                AUDIO_HW_OUT_LATENCY_MS; }
+                            AUDIO_HW_OUT_LATENCY_MS; }
         virtual status_t setVolume(float left, float right)
-        { return INVALID_OPERATION; }
+                  { return INVALID_OPERATION; }
         virtual ssize_t write(const void* buffer, size_t bytes);
         virtual status_t standby();
                 bool checkStandby();
@@ -292,7 +286,7 @@ private:
     class AudioStreamInALSA : public AudioStreamIn, public RefBase
     {
 
-     public:
+    public:
                     AudioStreamInALSA();
         virtual     ~AudioStreamInALSA();
         status_t    set(AudioHardware* hw,

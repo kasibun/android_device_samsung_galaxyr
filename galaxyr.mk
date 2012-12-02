@@ -64,17 +64,8 @@ PRODUCT_PACKAGES += \
     gralloc.tegra \
     hwcomposer.tegra \
     audio.primary.n1 \
-    audio_policy.n1
-
-# BT cmdline tools
-PRODUCT_PACKAGES += \
-    bdaddr_read \
-    bccmd \
-    sdptool \
-    hciattach \
-    hciconfig \
-    hcitool \
-    avinfo
+    audio_policy.n1 \
+    audio.a2dp.default
 
 # Set true if you want .odex files
 DISABLE_DEXPREOPT := false
@@ -88,11 +79,10 @@ PRODUCT_COPY_FILES += \
     device/samsung/galaxyr/ueventd.n1.rc:root/ueventd.n1.rc
 
 # Prebuilt modules
-#     device/samsung/galaxyr/prebuilt/Si4709_driver.ko:root/lib/modules/Si4709_driver.ko
-
 PRODUCT_COPY_FILES += \
     device/samsung/galaxyr/prebuilt/dhd.ko:root/lib/modules/dhd.ko \
     device/samsung/galaxyr/prebuilt/scsi_wait_scan.ko:root/lib/modules/scsi_wait_scan.ko \
+    device/samsung/galaxyr/prebuilt/Si4709_driver.ko:root/lib/modules/Si4709_driver.ko \
     device/samsung/galaxyr/prebuilt/modules.dep:root/lib/modules/modules.dep \
     device/samsung/galaxyr/prebuilt/cbd:root/sbin/cbd
 
@@ -116,7 +106,7 @@ PRODUCT_COPY_FILES += \
 
 # Audio
 PRODUCT_COPY_FILES += \
-    device/samsung/galaxyr/libaudio/audio_policy.conf:system/etc/audio_policy.conf
+    device/samsung/galaxyr/configs/audio_policy.conf:system/etc/audio_policy.conf
 
 # OMX
 PRODUCT_COPY_FILES += \

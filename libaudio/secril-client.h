@@ -150,6 +150,16 @@ typedef enum _SoundClockCondition {
     SOUND_CLOCK_START
 } SoundClockCondition;
 
+typedef enum _TwoMicDevice {
+    AUDIENCE,
+    FORTEMEDIA
+} TwoMicDevice;
+
+typedef enum _TwoMicState {
+    TWO_MIC_SOLUTION_OFF,
+    TWO_MIC_SOLUTION_ON
+} TwoMicState;
+
 /**
  * Set in-call volume.
  */
@@ -164,6 +174,11 @@ int SetCallAudioPath(HRilClient client, AudioPath path);
  * Set modem clock to master or slave.
  */
 int SetCallClockSync(HRilClient client, SoundClockCondition condition);
+
+/**
+ * Set two mic mode.
+ */
+int SetTwoMicControl(HRilClient client, TwoMicDevice device, TwoMicState state);
 
 #ifdef __cplusplus
 };

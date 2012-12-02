@@ -40,7 +40,7 @@ BOARD_NAND_PAGE_SIZE := 4096
 BOARD_NAND_SPARE_SIZE := 128
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_BASE := 0x10000000
-BOARD_KERNEL_CMDLINE := mem=511M@0M secmem=1M@511M mem=512M@512M vmalloc=256M fota_boot=false lpm_boot=0 tegra_fbmem=800K@0x18012000 video=tegrafb console=ram usbcore.old_scheme_first=1 lp0_vec=8192@0x1819E000 emmc_checksum_done=true emmc_checksum_pass=true tegraboot=sdmmc gpt
+BOARD_KERNEL_CMDLINE := mem=511M@0M secmem=1M@511M mem=512M@512M vmalloc=256M fota_boot=false tegra_fbmem=800K@0x18012000 video=tegrafb console=ram usbcore.old_scheme_first=1 lp0_vec=8192@0x1819E000 emmc_checksum_done=true emmc_checksum_pass=true tegraboot=sdmmc gpt
 
 #BOARD_KERNEL_CMDLINE := mem=511M@0M secmem=1M@511M mem=512M@512M vmalloc=256M fota_boot=false video=tegrafb console=ram usbcore.old_scheme_first=1 #emmc_checksum_done=true emmc_checksum_pass=true tegraboot=sdmmc gpt 
 
@@ -51,7 +51,7 @@ BOARD_KERNEL_CMDLINE := mem=511M@0M secmem=1M@511M mem=512M@512M vmalloc=256M fo
 # BOARD_KERNEL_CMDLINE += tegra_fbmem=800K@0x18012000 lp0_vec=8192@0x1819E000
 
 # kernel modules location (busybox)
-KERNEL_MODULES_DIR := /lib/modules
+KERNEL_MODULES_DIR := "/lib/modules"
 
 # required to remove kernel modules, recovery size is limited to 5MB
 BOARD_RECOVERY_RAMDISK_EXTRA_SCRIPT := device/samsung/galaxyr/releasetools/recovery_ramdisk.sh
@@ -81,7 +81,7 @@ BOARD_MOBILEDATA_INTERFACE_NAME := "rmnet0"
 
 # Audio
 BOARD_USES_GENERIC_AUDIO := false
-TARGET_PROVIDES_LIBAUDIO := false # We must build it.
+TARGET_PROVIDES_LIBAUDIO := false
 
 # Camera
 BOARD_SECOND_CAMERA_DEVICE := true
@@ -98,23 +98,10 @@ BOARD_USES_HWCOMPOSER := true
 
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
-BOARD_HAVE_BLUETOOTH_BCM := true
-BOARD_FORCE_STATIC_A2DP := true
-#BOARD_CUSTOM_BLUEDROID := ../../../device/samsung/galaxyr/bluetooth.c
-#BOARD_HAVE_BLUETOOTH_CSR := true
-BOARD_HAVE_BLUETOOTH_BCM_BTLA := true
-BOARD_HAVE_BLUETOOTH_BCM_SEMC := true
-BT_ALT_STACK := true
-BRCM_BT_USE_BTL_IF := true
-BRCM_BTL_INCLUDE_A2DP := true
-BOARD_HAS_EXTRA_SYS_PROPS := true
+# We have a Broadcom bluetooth device, but this is used only for building brcm_patchram_plus. We use the proprietary binary.
+#BOARD_HAVE_BLUETOOTH_BCM := true
 
-# FM Radio
-BOARD_HAVE_FM_RADIO := true
-BOARD_GLOBAL_CFLAGS += -DHAVE_FM_RADIO
-BOARD_FM_DEVICE := si4709
-
-# Wifi related defines
+# Wifi-related defines
 WPA_BUILD_SUPPLICANT        	:= true
 WPA_SUPPLICANT_VERSION      	:= VER_0_8_X
 BOARD_WLAN_DEVICE           	:= bcmdhd
@@ -125,13 +112,12 @@ BOARD_HOSTAPD_DRIVER            := NL80211
 BOARD_HOSTAPD_PRIVATE_LIB       := lib_driver_cmd_bcmdhd
 WIFI_DRIVER_MODULE_PATH     	:= "/lib/modules/dhd.ko"
 WIFI_DRIVER_FW_PATH_PARAM 	:= "/sys/module/dhd/parameters/firmware_path"
-WIFI_DRIVER_FW_PATH_AP      	:= "/system/etc/wifi/bcm4330_apsta.bin"
-WIFI_DRIVER_FW_PATH_MFG     	:= "/system/etc/wifi/bcm4330_mfg.bin"
-WIFI_DRIVER_FW_PATH_P2P     	:= "/system/etc/wifi/bcm4330_p2p.bin"
 WIFI_DRIVER_FW_PATH_STA     	:= "/system/etc/wifi/bcm4330_sta.bin"
+WIFI_DRIVER_FW_PATH_AP      	:= "/system/etc/wifi/bcm4330_apsta.bin"
+WIFI_DRIVER_FW_PATH_P2P     	:= "/system/etc/wifi/bcm4330_p2p.bin"
 #WIFI_FIRMWARE_LOADER       	:= "wlandutservice"
 WIFI_DRIVER_MODULE_NAME     	:= "dhd"
-WIFI_DRIVER_MODULE_ARG      	:= "firmware_path=/system/etc/wifi/bcm4330_sta.bin nvram_path=/system/etc/wifi/nvram_net.txt iface_name=wlan0"
+WIFI_DRIVER_MODULE_ARG      	:= "firmware_path=/system/etc/wifi/bcm4330_sta.bin nvram_path=/system/etc/wifi/nvram_net.txt"
 WIFI_BAND                       := 802_11_ABG
 BOARD_LEGACY_NL80211_STA_EVENTS := true
 
@@ -152,7 +138,7 @@ TARGET_OTA_ASSERT_DEVICE := galaxyr,GT-I9103,n1
 BOARD_VOLD_MAX_PARTITIONS := 12
 BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
 BOARD_VOLD_DISC_HAS_MULTIPLE_MAJORS := true
-#BOARD_USE_USB_MASS_STORAGE_SWITCH := true
+BOARD_USE_USB_MASS_STORAGE_SWITCH := true
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/fsl-tegra-udc/gadget/lun%d/file"
 
 BOARD_HAS_SDCARD_INTERNAL := true
@@ -171,7 +157,7 @@ TARGET_RECOVERY_INITRC := device/samsung/galaxyr/recovery.rc
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/samsung/galaxyr/recovery/recovery_keys.c
 BOARD_CUSTOM_GRAPHICS := ../../../device/samsung/galaxyr/recovery/graphics.c
 
-BOARD_UMS_LUNFILE := "/sys/devices/platform/fsl-tegra-udc/gadget/lun0/file"
+BOARD_UMS_LUNFILE := "/sys/devices/platform/fsl-tegra-udc/gadget/lun%d/file"
 BOARD_USES_MMCUTILS := true
 #BOARD_HAS_NO_MISC_PARTITION := true
 BOARD_HAS_NO_SELECT_BUTTON := true
