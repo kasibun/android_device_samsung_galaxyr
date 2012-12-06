@@ -97,7 +97,9 @@ on boot
     chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
 
 # bluetooth MAC address programming
-    exec /system/bin/bdaddr_read
+    chown bluetooth bluetooth ro.bt.bdaddr_path
+    chown bluetooth bluetooth /system/etc/bluetooth
+    setprop ro.bt.bdaddr_path "/efs/bluetooth/bt_addr"
 
 # UART/USB path switching
     chown system radio /sys/devices/platform/i2c-gpio.11/i2c-11/11-0025/uartsel

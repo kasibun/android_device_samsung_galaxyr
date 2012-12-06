@@ -40,7 +40,6 @@ wifi.interface=wlan0
 
 # Wifi ap interface
 wifi.ap.interface=wlan0
-wifi.p2pinterface=wlan0
 softap.interface=wlan0
 ro.wifi-ap.fw-path=/etc/wifi/bcm4330_apsta.bin
 

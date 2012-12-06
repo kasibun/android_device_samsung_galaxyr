@@ -51,7 +51,7 @@ BOARD_KERNEL_CMDLINE := mem=511M@0M secmem=1M@511M mem=512M@512M vmalloc=256M fo
 # BOARD_KERNEL_CMDLINE += tegra_fbmem=800K@0x18012000 lp0_vec=8192@0x1819E000
 
 # kernel modules location (busybox)
-KERNEL_MODULES_DIR := "/lib/modules"
+KERNEL_MODULES_DIR := /lib/modules
 
 # required to remove kernel modules, recovery size is limited to 5MB
 BOARD_RECOVERY_RAMDISK_EXTRA_SCRIPT := device/samsung/galaxyr/releasetools/recovery_ramdisk.sh
@@ -142,7 +142,8 @@ BOARD_USE_USB_MASS_STORAGE_SWITCH := true
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/fsl-tegra-udc/gadget/lun%d/file"
 
 BOARD_HAS_SDCARD_INTERNAL := true
-BOARD_SDEXT_DEVICE := /dev/block/mmcblk1p2
+# Not used anymore.
+#BOARD_SDEXT_DEVICE := /dev/block/mmcblk1p2
 
 # LPM
 BOARD_CHARGING_MODE_BOOTING_LPM := "/sys/class/power_supply/battery/batt_lp_charging"
@@ -159,7 +160,7 @@ BOARD_CUSTOM_GRAPHICS := ../../../device/samsung/galaxyr/recovery/graphics.c
 
 BOARD_UMS_LUNFILE := "/sys/devices/platform/fsl-tegra-udc/gadget/lun%d/file"
 BOARD_USES_MMCUTILS := true
-#BOARD_HAS_NO_MISC_PARTITION := true
+BOARD_HAS_NO_MISC_PARTITION := true
 BOARD_HAS_NO_SELECT_BUTTON := true
 
 # TWRP
@@ -172,4 +173,5 @@ TW_EXTERNAL_STORAGE_MOUNT_POINT := "sdcard"
 
 TW_NO_REBOOT_BOOTLOADER := true
 TW_DEFAULT_EXTERNAL_STORAGE := true
-TW_FLASH_FROM_STORAGE := true
+# Not needed. It's already the default behaviour.
+#TW_FLASH_FROM_STORAGE := true
