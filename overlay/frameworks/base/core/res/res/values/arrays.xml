@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-** Copyright 2011, The CyanogenMod Project
+/* //device/apps/common/assets/res/any/colors.xml
+**
+** Copyright 2006, The Android Open Source Project
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -16,31 +18,20 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- Defines the shutdown options shown in the reboot dialog. -->
-    <array name="shutdown_reboot_options" translatable="false">
-        <item>@string/reboot_reboot</item>
+
+<!-- Defines the shutdown options shown in the reboot dialog. -->
+    <array name="reboot_options" translatable="false">
+        <item>@string/reboot</item>
         <item>@string/reboot_recovery</item>
         <item>@string/reboot_download</item>
-<!-- disabled
-        <item>@string/reboot_fastboot</item>
-        <item>@string/reboot_bootmenu</item>
-        <item>Bootmenu Recovery</item>
-        <item>Bootmenu Shell</item>
--->
     </array>
 
     <!-- Do not translate. Defines the shutdown actions passed to the kernel.
          The first item should be empty for regular reboot. -->
-    <string-array name="shutdown_reboot_actions" translatable="false">
+    <string-array name="reboot_values" translatable="false">
         <item></item>
         <item>recovery</item>
-        <item>download</item>
-<!-- disabled
-        <item>fastboot</item>
-        <item>bootmenu</item>
-        <item>bootmenu recovery</item>
-        <item>bootmenu shell</item>
--->
+        <item>bootloader</item>
     </string-array>
 
 </resources>

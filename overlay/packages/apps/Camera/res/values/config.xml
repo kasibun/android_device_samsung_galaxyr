@@ -18,24 +18,9 @@
 -->
 
 <resources>
-	<!-- Touch to focus parameters -->
-	<string name="touchFocusParameter">touch-focus</string>
-	<bool name="touchFocusNeedsRect">false</bool>
-
-        <!-- Samsung Continuous Autofocus -->
-        <bool name="needsSamsungContinuousAf">true</bool>
-
         <!-- Samsung Camera Settings -->
         <bool name="hasSamsungCamSettings">true</bool>
 
         <!-- Allows setting video size before recording starts -->
         <bool name="needsEarlyVideoSize">true</bool>
-
-	<!-- FFC parameter filtering -->
-	<bool name="ffc_canFocus">false</bool>
-	<bool name="ffc_canZoom">false</bool>
-	<string name="ffc_supportedEffects">none</string>
-
-	<!-- Disable camcorder autofocus at start, breaks second video recording -->
-	<bool name="focusCamcorderAtStart">false</bool>
 </resources>
