@@ -21,6 +21,7 @@ LOCAL_PATH := $(call my-dir)
 TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
 TARGET_CPU_SMP := true
+TARGET_ARCH := arm
 TARGET_ARCH_VARIANT := armv7-a
 TARGET_ARCH_VARIANT_CPU := cortex-a9
 # Avoid the generation of ldrcc instructions
@@ -95,6 +96,7 @@ ENABLE_WEBGL := true
 
 # HWComposer
 BOARD_USES_HWCOMPOSER := true
+BOARD_EGL_NEEDS_LEGACY_FB := true
 
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
